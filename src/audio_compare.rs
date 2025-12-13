@@ -15,7 +15,7 @@ pub fn compare_wav_files(file1: &Path, file2: &Path) -> Result<AudioComparisonRe
     
     // 计算音频相似度：使用交叉相关找最佳对齐，然后比较
     let time_to_compare = dur1_sec.min(dur2_sec).min(5.0);
-    let num_points = 20000; // 增加采样点数以提高精度
+    let num_points = 25000; // 平衡精度和速度
     let channels = std::cmp::min(wave1.channels(), wave2.channels());
     
     // 首先找到最佳时间偏移（使用第一个声道）
@@ -96,8 +96,9 @@ pub fn compare_wav_files(file1: &Path, file2: &Path) -> Result<AudioComparisonRe
     };
     
     let correlation_similarity = (normalized_correlation + 1.0) / 2.0;
-    // 增加相关系数的权重，因为它更能反映波形形状的相似性
-    let similarity = 100.0 * (rms_similarity * 0.2 + correlation_similarity * 0.8);
+    // 相关系数为主，RMS为辅
+    // 对于极端波形（如窄脉冲），波形相关性最重要
+    let similarity = 100.0 * (rms_similarity * 0.01 + correlation_similarity * 0.99);
     
     Ok(AudioComparisonResult {
         duration_diff,

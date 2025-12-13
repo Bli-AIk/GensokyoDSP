@@ -21,8 +21,9 @@ impl TestCase {
         let synth = synthesizer::SynplantSynthesizer::new(patch.genome);
         let wave = synth.synthesize(self.duration);
         
-        // 保存到临时文件
-        let output_path = format!("target/test_{}.wav", self.name);
+        // 保存到测试输出文件夹
+        std::fs::create_dir_all("tests/output")?;
+        let output_path = format!("tests/output/test_{}.wav", self.name);
         wave.save_wav16(&output_path)?;
         
         // 与参考音频比较
@@ -34,8 +35,7 @@ impl TestCase {
         println!("\n测试 '{}' 结果:", self.name);
         result.print_report();
         
-        // 清理临时文件
-        let _ = std::fs::remove_file(&output_path);
+        // 不再删除输出文件，保留用于人工核对
         
         // 检查相似度 (硬编码为95%)
         const SIMILARITY_THRESHOLD: f64 = 95.0;
@@ -60,7 +60,8 @@ fn test_default_synthesis() {
     let synth = synthesizer::SynplantSynthesizer::new(patch.genome);
     let wave = synth.synthesize(7.24);
     
-    let output_path = "target/test_default.wav";
+    std::fs::create_dir_all("tests/output").expect("创建输出文件夹失败");
+    let output_path = "tests/output/test_default.wav";
     wave.save_wav16(&output_path).expect("保存音频失败");
     
     let result = audio_compare::compare_wav_files(
@@ -71,7 +72,7 @@ fn test_default_synthesis() {
     println!("\n测试 'default' 结果:");
     result.print_report();
     
-    let _ = std::fs::remove_file(&output_path);
+    // 不再删除输出文件，保留用于人工核对
     
     const SIMILARITY_THRESHOLD: f64 = 95.0;
     assert!(result.is_similar(SIMILARITY_THRESHOLD), 
