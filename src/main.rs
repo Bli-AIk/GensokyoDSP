@@ -22,20 +22,20 @@ fn synthesize_from_config(
     config_path: &Path,
     output_path: &Path,
     duration: f64,
-    reference_path: Option<&Path>
+    reference_path: Option<&Path>,
 ) -> Result<(), Box<dyn std::error::Error>> {
     // 加载配置
     let patch = synplant::SynplantPatch::from_ron_file(config_path)?;
     println!("  已加载音色: {}", patch.name);
-    
+
     // 合成音频
     let synth = synthesizer::SynplantSynthesizer::new(patch.genome);
     let wave = synth.synthesize(duration);
-    
+
     // 保存文件
     wave.save_wav16(output_path)?;
     println!("  ✓ 已保存到: {}", output_path.display());
-    
+
     // 如果有参考文件，进行比较
     if let Some(ref_path) = reference_path {
         if ref_path.exists() {
@@ -55,37 +55,41 @@ fn synthesize_from_config(
             eprintln!("  ⚠ 参考文件不存在: {}", ref_path.display());
         }
     }
-    
+
     Ok(())
 }
 
 fn main() {
     println!("=== Gensokyo DSP - Synplant音色合成器 ===\n");
-    
+
     let args: Vec<String> = env::args().collect();
-    
+
     // 如果没有参数，显示帮助并使用默认配置
     if args.len() < 2 {
         println!("未指定配置文件，使用默认配置...\n");
-        
+
         let config_path = Path::new("assets/default.ron");
         let output_path = Path::new("output_default.wav");
         let duration = 7.24;
         let reference_path = Path::new("tests/fixtures/default_syn.wav");
-        
+
         if !config_path.exists() {
             eprintln!("错误: 默认配置文件不存在: {}", config_path.display());
             eprintln!("\n请指定配置文件:");
             print_usage();
             std::process::exit(1);
         }
-        
+
         println!("正在合成音色...");
         match synthesize_from_config(
             config_path,
             output_path,
             duration,
-            if reference_path.exists() { Some(reference_path) } else { None }
+            if reference_path.exists() {
+                Some(reference_path)
+            } else {
+                None
+            },
         ) {
             Ok(_) => println!("\n✓ 合成完成！"),
             Err(e) => {
@@ -95,7 +99,7 @@ fn main() {
         }
         return;
     }
-    
+
     // 解析命令行参数
     let config_path = PathBuf::from(&args[1]);
     let output_path = if args.len() > 2 {
@@ -116,19 +120,19 @@ fn main() {
     } else {
         None
     };
-    
+
     // 验证配置文件存在
     if !config_path.exists() {
         eprintln!("错误: 配置文件不存在: {}", config_path.display());
         std::process::exit(1);
     }
-    
+
     println!("正在合成音色...");
     match synthesize_from_config(
         &config_path,
         &output_path,
         duration,
-        reference_path.as_deref()
+        reference_path.as_deref(),
     ) {
         Ok(_) => println!("\n✓ 合成完成！"),
         Err(e) => {

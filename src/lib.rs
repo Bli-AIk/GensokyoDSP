@@ -1,7 +1,7 @@
+pub mod audio_compare;
 pub mod synplant;
 pub mod synthesizer;
-pub mod audio_compare;
 
-pub use synplant::{SynplantPatch, SynplantGenome};
+pub use audio_compare::{AudioComparisonResult, compare_wav_files};
+pub use synplant::{SynplantGenome, SynplantPatch};
 pub use synthesizer::SynplantSynthesizer;
-pub use audio_compare::{compare_wav_files, AudioComparisonResult};

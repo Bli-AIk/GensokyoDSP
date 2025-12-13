@@ -13,40 +13,37 @@ impl TestCase {
     fn run(&self) -> Result<(), Box<dyn std::error::Error>> {
         let config_path = Path::new("tests/fixtures/a_form_tests").join(self.config_file);
         let reference_path = Path::new("tests/fixtures/a_form_tests").join(self.reference_file);
-        
+
         // 加载配置
         let patch = synplant::SynplantPatch::from_ron_file(&config_path)?;
-        
+
         // 合成音频
         let synth = synthesizer::SynplantSynthesizer::new(patch.genome);
         let wave = synth.synthesize(self.duration);
-        
+
         // 保存到测试输出文件夹
         std::fs::create_dir_all("tests/output")?;
         let output_path = format!("tests/output/test_{}.wav", self.name);
         wave.save_wav16(&output_path)?;
-        
+
         // 与参考音频比较
-        let result = audio_compare::compare_wav_files(
-            Path::new(&output_path),
-            &reference_path
-        )?;
-        
+        let result = audio_compare::compare_wav_files(Path::new(&output_path), &reference_path)?;
+
         println!("\n测试 '{}' 结果:", self.name);
         result.print_report();
-        
+
         // 不再删除输出文件，保留用于人工核对
-        
+
         // 检查相似度 (硬编码为95%)
         const SIMILARITY_THRESHOLD: f64 = 95.0;
         if !result.is_similar(SIMILARITY_THRESHOLD) {
             return Err(format!(
                 "相似度 {:.2}% 低于阈值 {:.2}%",
-                result.similarity,
-                SIMILARITY_THRESHOLD
-            ).into());
+                result.similarity, SIMILARITY_THRESHOLD
+            )
+            .into());
         }
-        
+
         Ok(())
     }
 }
@@ -55,28 +52,30 @@ impl TestCase {
 fn test_default_synthesis() {
     let config_path = Path::new("tests/fixtures").join("default.ron");
     let reference_path = Path::new("tests/fixtures").join("default_syn.wav");
-    
+
     let patch = synplant::SynplantPatch::from_ron_file(&config_path).expect("加载配置失败");
     let synth = synthesizer::SynplantSynthesizer::new(patch.genome);
     let wave = synth.synthesize(7.24);
-    
+
     std::fs::create_dir_all("tests/output").expect("创建输出文件夹失败");
     let output_path = "tests/output/test_default.wav";
     wave.save_wav16(&output_path).expect("保存音频失败");
-    
-    let result = audio_compare::compare_wav_files(
-        Path::new(&output_path),
-        &reference_path
-    ).expect("比较音频失败");
-    
+
+    let result = audio_compare::compare_wav_files(Path::new(&output_path), &reference_path)
+        .expect("比较音频失败");
+
     println!("\n测试 'default' 结果:");
     result.print_report();
-    
+
     // 不再删除输出文件，保留用于人工核对
-    
+
     const SIMILARITY_THRESHOLD: f64 = 95.0;
-    assert!(result.is_similar(SIMILARITY_THRESHOLD), 
-        "相似度 {:.2}% 低于阈值 {:.2}%", result.similarity, SIMILARITY_THRESHOLD);
+    assert!(
+        result.is_similar(SIMILARITY_THRESHOLD),
+        "相似度 {:.2}% 低于阈值 {:.2}%",
+        result.similarity,
+        SIMILARITY_THRESHOLD
+    );
 }
 
 // a_form波形变形测试 - 正弦波到锯齿波阶段 (0.0 -> 0.57)
@@ -308,11 +307,11 @@ fn test_a_form_1_0() {
 fn list_available_tests() {
     let fixtures_dir = Path::new("tests/fixtures");
     println!("\n可用的测试样例:");
-    
+
     if let Ok(entries) = std::fs::read_dir(fixtures_dir) {
         let mut configs = Vec::new();
         let mut wavs = Vec::new();
-        
+
         for entry in entries.flatten() {
             let path = entry.path();
             if let Some(ext) = path.extension() {
@@ -323,7 +322,7 @@ fn list_available_tests() {
                 }
             }
         }
-        
+
         println!("  配置文件 (.ron): {:?}", configs);
         println!("  参考音频 (.wav): {:?}", wavs);
     }
