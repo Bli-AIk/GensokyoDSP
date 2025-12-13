@@ -94,7 +94,7 @@ def analyze_detailed(val):
         print(f"⚠️  波形相关性较低 ({correlation:.3f})，可能存在相位或形状问题")
 
 # 分析3个失败的测试
-for val in [0.7, 0.95, 1.0]:
+for val in [0.6, 0.95, 1.0]:
     try:
         analyze_detailed(val)
     except Exception as e:

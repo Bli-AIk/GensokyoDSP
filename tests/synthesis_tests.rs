@@ -301,6 +301,57 @@ fn test_a_form_1_0() {
     test.run().expect("a_form=1.0 测试失败");
 }
 
+#[test]
+fn test_a_form_linear() {
+    // 动态参数测试: a_form_Linear.wav
+    // 逻辑: 0.0 -> 1.0 (前一半时间) -> 0.0 (后一半时间)
+    
+    let reference_file = "a_form_Linear.wav";
+    let reference_path = Path::new("tests/fixtures/a_form_tests").join(reference_file);
+    
+    // 加载参考音频以获取时长
+    // 为了简单，我们硬编码时长，与之前的文件一致
+    let duration = 7.2398125;
+    let half_duration = duration / 2.0;
+    
+    // 使用默认Genome创建Synth
+    let config_path = Path::new("tests/fixtures/default.ron");
+    let patch = synplant::SynplantPatch::from_ron_file(&config_path).expect("加载默认配置失败");
+    let synth = synthesizer::SynplantSynthesizer::new(patch.genome);
+    
+    // 参考频率: C5 (a_freq=0.5 -> ~523.25 Hz)
+    let freq = 523.2511; 
+    
+    // 动态生成波形
+    let wave = synth.synthesize_dynamic_test(duration, 48000.0, freq, move |t| {
+        if t <= half_duration {
+            t / half_duration
+        } else {
+            1.0 - (t - half_duration) / half_duration
+        }
+    });
+    
+    // 保存输出
+    let output_path = "tests/output/test_a_form_Linear.wav";
+    std::fs::create_dir_all("tests/output").expect("创建输出文件夹失败");
+    wave.save_wav16(&output_path).expect("保存音频失败");
+    
+    // 比较
+    let result = audio_compare::compare_wav_files(Path::new(&output_path), &reference_path)
+        .expect("比较音频失败");
+        
+    println!("\n测试 'a_form_Linear' 结果:");
+    result.print_report();
+    
+    const SIMILARITY_THRESHOLD: f64 = 95.0;
+    assert!(
+        result.is_similar(SIMILARITY_THRESHOLD),
+        "相似度 {:.2}% 低于阈值 {:.2}%",
+        result.similarity,
+        SIMILARITY_THRESHOLD
+    );
+}
+
 /// 辅助函数：列出所有可用的测试样例
 #[test]
 #[ignore]
