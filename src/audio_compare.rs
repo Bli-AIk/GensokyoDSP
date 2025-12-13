@@ -13,34 +13,70 @@ pub fn compare_wav_files(file1: &Path, file2: &Path) -> Result<AudioComparisonRe
     let dur2_sec = wave2.length() as f64 / wave2.sample_rate();
     let duration_diff = (dur1_sec - dur2_sec).abs();
     
-    // 计算音频相似度：采样重采样后比较
+    // 计算音频相似度：使用交叉相关找最佳对齐，然后比较
     let time_to_compare = dur1_sec.min(dur2_sec).min(5.0);
-    let num_points = 5000;
+    let num_points = 20000; // 增加采样点数以提高精度
     let channels = std::cmp::min(wave1.channels(), wave2.channels());
     
+    // 首先找到最佳时间偏移（使用第一个声道）
+    let max_lag = (0.1 * wave1.sample_rate()) as isize; // 最多100ms的偏移
+    let mut best_correlation = f64::NEG_INFINITY;
+    let mut best_lag = 0_isize;
+    
+    for lag in -max_lag..=max_lag {
+        let mut corr = 0.0_f64;
+        let mut count = 0;
+        
+        for i in 0..num_points {
+            let t = (i as f64 / num_points as f64) * time_to_compare;
+            let idx1 = (t * wave1.sample_rate()) as isize + lag;
+            let idx2 = (t * wave2.sample_rate()) as isize;
+            
+            if idx1 >= 0 && idx1 < wave1.length() as isize && idx2 >= 0 && idx2 < wave2.length() as isize {
+                let sample1 = wave1.at(0, idx1 as usize) as f64;
+                let sample2 = wave2.at(0, idx2 as usize) as f64;
+                corr += sample1 * sample2;
+                count += 1;
+            }
+        }
+        
+        if count > 0 {
+            corr /= count as f64;
+            if corr > best_correlation {
+                best_correlation = corr;
+                best_lag = lag;
+            }
+        }
+    }
+    
+    // 使用最佳偏移计算相似度
     let mut sum_diff_sq = 0.0_f64;
     let mut sum_rms1 = 0.0_f64;
     let mut sum_rms2 = 0.0_f64;
     let mut correlation = 0.0_f64;
+    let mut valid_samples = 0;
     
     for i in 0..num_points {
         let t = (i as f64 / num_points as f64) * time_to_compare;
         
         for ch in 0..channels {
-            let idx1 = std::cmp::min((t * wave1.sample_rate()) as usize, wave1.length() - 1);
-            let idx2 = std::cmp::min((t * wave2.sample_rate()) as usize, wave2.length() - 1);
+            let idx1 = (t * wave1.sample_rate()) as isize + best_lag;
+            let idx2 = (t * wave2.sample_rate()) as isize;
             
-            let sample1 = wave1.at(ch, idx1) as f64;
-            let sample2 = wave2.at(ch, idx2) as f64;
-            
-            sum_diff_sq += (sample1 - sample2).powi(2);
-            sum_rms1 += sample1.powi(2);
-            sum_rms2 += sample2.powi(2);
-            correlation += sample1 * sample2;
+            if idx1 >= 0 && idx1 < wave1.length() as isize && idx2 >= 0 && idx2 < wave2.length() as isize {
+                let sample1 = wave1.at(ch, idx1 as usize) as f64;
+                let sample2 = wave2.at(ch, idx2 as usize) as f64;
+                
+                sum_diff_sq += (sample1 - sample2).powi(2);
+                sum_rms1 += sample1.powi(2);
+                sum_rms2 += sample2.powi(2);
+                correlation += sample1 * sample2;
+                valid_samples += 1;
+            }
         }
     }
     
-    let total_samples = (num_points * channels) as f64;
+    let total_samples = std::cmp::max(valid_samples, 1) as f64;
     let rms_diff = (sum_diff_sq / total_samples).sqrt();
     let rms1 = (sum_rms1 / total_samples).sqrt();
     let rms2 = (sum_rms2 / total_samples).sqrt();

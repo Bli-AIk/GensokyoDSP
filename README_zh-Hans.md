@@ -54,27 +54,83 @@
 
 ## 快速开始
 
+### 命令行使用
+
+```bash
+# 克隆并编译
+git clone https://github.com/yourusername/gensokyo_dsp.git
+cd gensokyo_dsp
+cargo build --release
+
+# 使用默认配置运行
+cargo run
+
+# 从自定义配置合成声音
+cargo run -- assets/koto.ron output.wav 5.0
+
+# 与参考音频比较
+cargo run -- assets/default.ron output.wav 7.24 reference.wav
+```
+
+详细的命令行用法请参见 [USAGE.md](USAGE.md)。
+
+### 作为库使用
+
 1.  **添加依赖**:
     
     ```toml
     [dependencies]
-    gensokyo_dsp = "0.1"
+    gensokyo_dsp = { path = "../gensokyo_dsp" }
     ```
 
-2.  **未来计划：与 Bevy 集成**:
-
-    *注：Bevy 集成目前正在设计中，以下 API 为假设性的。*
+2.  **基础用法**:
 
     ```rust
-    // 计划中的 Bevy 系统用法
-    fn spawn_bgm(mut commands: Commands, mut synth: ResMut<GensokyoSynth>) {
-        // 启动 ZUNpet 乐器实例
-        let zunpet_id = synth.spawn_instrument(InstrumentType::ZunPet);
+    use gensokyo_dsp::*;
+
+    fn main() -> Result<(), Box<dyn std::error::Error>> {
+        // 加载配置
+        let patch = synplant::SynplantPatch::from_ron_file("config.ron")?;
         
-        // 播放序列
-        synth.play_sequence(zunpet_id, "assets/midi/bad_apple.mid");
+        // 创建合成器
+        let synth = synthesizer::SynplantSynthesizer::new(patch.genome);
+        
+        // 合成音频（5秒）
+        let wave = synth.synthesize(5.0);
+        
+        // 保存到文件
+        wave.save_wav16("output.wav")?;
+        
+        Ok(())
     }
     ```
+
+### 运行测试
+
+```bash
+# 运行所有测试
+cargo test -- --nocapture
+
+# 运行特定测试
+cargo test test_default_synthesis
+```
+
+详细的测试说明请参见 [tests/README.md](tests/README.md)。
+
+### 未来计划：与 Bevy 集成
+
+*注：Bevy 集成目前正在设计中，以下 API 为假设性的。*
+
+```rust
+// 计划中的 Bevy 系统用法
+fn spawn_bgm(mut commands: Commands, mut synth: ResMut<GensokyoSynth>) {
+    // 启动 ZUNpet 乐器实例
+    let zunpet_id = synth.spawn_instrument(InstrumentType::ZunPet);
+    
+    // 播放序列
+    synth.play_sequence(zunpet_id, "assets/midi/bad_apple.mid");
+}
+```
 
 ## 贡献指南
 
