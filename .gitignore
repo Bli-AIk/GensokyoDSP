@@ -1,3 +1,8 @@
 /target
+output_*.wav
 
-#/dev
+# IDE
+.idea/
+
+# 开发文件
+/dev

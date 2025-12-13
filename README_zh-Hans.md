@@ -123,3 +123,7 @@
 *   MIT license ([LICENSE-MIT](LICENSE-MIT) 或 [http://opensource.org/licenses/MIT](http://opensource.org/licenses/MIT))
 
 由你选择。
+
+## 免责声明 (Disclaimer)
+
+Synplant 是 Sonic Charge 的商标。本项目与 Sonic Charge 无关，也未获得其认可。

@@ -123,3 +123,7 @@ This project is licensed under either of
 *   MIT license ([LICENSE-MIT](LICENSE-MIT) or [http://opensource.org/licenses/MIT](http://opensource.org/licenses/MIT))
 
 at your option.
+
+## Disclaimer
+
+Synplant is a trademark of Sonic Charge. This project is not affiliated with or endorsed by Sonic Charge.
