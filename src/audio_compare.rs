@@ -89,4 +89,8 @@ impl AudioComparisonResult {
         println!("  RMS差异: {:.6}", self.rms_diff);
         println!("  相似度: {:.2}%", self.similarity);
     }
+    
+    pub fn is_similar(&self, threshold: f64) -> bool {
+        self.similarity >= threshold
+    }
 }

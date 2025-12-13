@@ -78,9 +78,14 @@ pub struct SynplantPatch {
 }
 
 impl SynplantPatch {
-    pub fn from_ron_file(path: &str) -> Result<Self, Box<dyn std::error::Error>> {
+    pub fn from_ron_file<P: AsRef<std::path::Path>>(path: P) -> Result<Self, Box<dyn std::error::Error>> {
         let content = std::fs::read_to_string(path)?;
         let patch: SynplantPatch = ron::from_str(&content)?;
+        Ok(patch)
+    }
+    
+    pub fn from_ron_str(content: &str) -> Result<Self, Box<dyn std::error::Error>> {
+        let patch: SynplantPatch = ron::from_str(content)?;
         Ok(patch)
     }
 }

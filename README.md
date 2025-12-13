@@ -54,27 +54,83 @@ In traditional game development, music usually exists in the form of `.wav` or `
 
 ## How to Use
 
+### Quick Start (Command Line)
+
+```bash
+# Clone and build
+git clone https://github.com/yourusername/gensokyo_dsp.git
+cd gensokyo_dsp
+cargo build --release
+
+# Run with default configuration
+cargo run
+
+# Synthesize custom sound from config
+cargo run -- assets/koto.ron output.wav 5.0
+
+# Compare with reference audio
+cargo run -- assets/default.ron output.wav 7.24 reference.wav
+```
+
+For detailed CLI usage, see [USAGE.md](dev/doc/agent/0/USAGE.md).
+
+### As a Library
+
 1.  **Add Dependency**:
     
     ```toml
     [dependencies]
-    gensokyo_dsp = "0.1"
+    gensokyo_dsp = { path = "../gensokyo_dsp" }
     ```
 
-2.  **Future Plans: Bevy Integration**:
-
-    *Note: The Bevy integration is currently under design and the following API is hypothetical.*
+2.  **Basic Usage**:
 
     ```rust
-    // Planned Usage in a Bevy system
-    fn spawn_bgm(mut commands: Commands, mut synth: ResMut<GensokyoSynth>) {
-        // Start a ZUNpet instrument instance
-        let zunpet_id = synth.spawn_instrument(InstrumentType::ZunPet);
+    use gensokyo_dsp::*;
+
+    fn main() -> Result<(), Box<dyn std::error::Error>> {
+        // Load configuration
+        let patch = synplant::SynplantPatch::from_ron_file("config.ron")?;
         
-        // Play a sequence
-        synth.play_sequence(zunpet_id, "assets/midi/bad_apple.mid");
+        // Create synthesizer
+        let synth = synthesizer::SynplantSynthesizer::new(patch.genome);
+        
+        // Synthesize audio (5 seconds)
+        let wave = synth.synthesize(5.0);
+        
+        // Save to file
+        wave.save_wav16("output.wav")?;
+        
+        Ok(())
     }
     ```
+
+### Running Tests
+
+```bash
+# Run all tests
+cargo test -- --nocapture
+
+# Run specific test
+cargo test test_default_synthesis
+```
+
+See [tests/README.md](tests/README.md) for testing details.
+
+### Future Plans: Bevy Integration
+
+*Note: The Bevy integration is currently under design and the following API is hypothetical.*
+
+```rust
+// Planned Usage in a Bevy system
+fn spawn_bgm(mut commands: Commands, mut synth: ResMut<GensokyoSynth>) {
+    // Start a ZUNpet instrument instance
+    let zunpet_id = synth.spawn_instrument(InstrumentType::ZunPet);
+    
+    // Play a sequence
+    synth.play_sequence(zunpet_id, "assets/midi/bad_apple.mid");
+}
+```
 
 ## Contributing
 

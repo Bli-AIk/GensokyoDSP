@@ -2,7 +2,7 @@
 output_*.wav
 
 # IDE
-.idea/
+/.idea
 
 # 开发文件
 /dev

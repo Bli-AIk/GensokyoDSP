@@ -35,7 +35,7 @@ impl SynplantSynthesizer {
         }
     }
     
-    pub fn synthesize(&self, duration: f64, sample_rate: f64) -> Wave {
+    pub fn synthesize_with_params(&self, duration: f64, sample_rate: f64) -> Wave {
         let freq_a = self.calculate_frequency(self.genome.a_freq);
         
         // TODO (doc line 41): 实现振荡器B的频率参数 (b_freq为相对频率)
@@ -112,5 +112,9 @@ impl SynplantSynthesizer {
         let mut graph = stereo * volume;
         
         Wave::render(sample_rate, duration, &mut graph)
+    }
+    
+    pub fn synthesize(&self, duration: f64) -> Wave {
+        self.synthesize_with_params(duration, 48000.0)
     }
 }

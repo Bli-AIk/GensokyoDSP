@@ -3,6 +3,14 @@ name = "gensokyo_dsp"
 version = "0.1.0"
 edition = "2024"
 
+[lib]
+name = "gensokyo_dsp"
+path = "src/lib.rs"
+
+[[bin]]
+name = "gensokyo_dsp"
+path = "src/main.rs"
+
 [dependencies]
 fundsp = "0.20.0"
 serde = { version = "1.0", features = ["derive"] }
