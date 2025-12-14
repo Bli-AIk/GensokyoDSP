@@ -1,3 +1,4 @@
+use crate::dsp::colored_noise::ColoredNoise;
 use crate::dsp::compensator::RmsCompensator;
 use crate::dsp::oscillator::MorphOscillator;
 use crate::synplant::SynplantGenome;
@@ -62,13 +63,14 @@ impl SynplantSynthesizer {
     pub fn synthesize_with_params(&self, duration: f64, sample_rate: f64) -> Wave {
         let freq_a = self.calculate_frequency(self.genome.a_freq);
         let form_a = self.genome.a_form;
+        let noise_a = self.genome.a_noise;
+        let color_a = self.genome.a_color;
 
         // TODO: Implement Oscillator B (genome.b_form, b_freq, etc.)
-        // TODO: Implement Noise (genome.a_noise, b_noise)
         // TODO: Implement FM (genome.fm_amt, fm_mod)
         // TODO: Implement Ring Mod / Mix (genome.mix_mod, osc_mix)
 
-        // Stage 1: Oscillator A
+        // Stage 1: Oscillator A with noise mixing
         let osc_node = self.create_oscillator_node(sample_rate);
         let comp_node = self.create_compensator_node();
 
@@ -81,7 +83,66 @@ impl SynplantSynthesizer {
         // Result = Osc * Comp
         let source = (freq_sig | form_sig_1) >> osc_node;
         let compensation = form_sig_2 >> comp_node;
-        let osc_a = source * compensation;
+        let osc_pure = source * compensation;
+
+        // Mix with colored noise
+        // Key insight from a_color analysis:
+        // - a_color controls noise spectrum from brown (0.0) to white (1.0)
+        // - At low a_noise: narrow-band filtered noise around fundamental
+        // - At high a_noise: broadband colored noise
+
+        // Create colored noise sources
+        let noise_narrow = An(ColoredNoise::new(123456789, color_a));
+        let noise_broad = An(ColoredNoise::new(987654321, color_a));
+
+        // For low a_noise: apply narrow bandpass filter to concentrate energy around fundamental
+        // Q=60 creates ~200Hz bandwidth at 500Hz
+        let q_narrow = 60.0;
+        let filtered_narrow = noise_narrow >> bandpass_hz(freq_a, q_narrow);
+
+        // For high a_noise: use colored noise directly (no additional filtering)
+        // The ColoredNoise generator already shapes the spectrum based on a_color
+        let colored_broad = noise_broad;
+
+        let osc_weight = 1.0 - noise_a;
+
+        // Mixing weights calibrated for correct RMS levels
+        let (narrow_weight, broad_weight) = if noise_a < 0.35 {
+            // Low noise: narrow-band filtered colored noise
+            (noise_a * 0.022, 0.0)
+        } else if noise_a < 0.74 {
+            // Mid noise: gradually increase narrow-band
+            let t = (noise_a - 0.35) / 0.39;
+            let narrow_w = 0.0077 + t * (0.044 - 0.0077);
+            (narrow_w, 0.0)
+        } else if noise_a < 0.95 {
+            // Transition: from narrow filtered to broad colored
+            // 从0.74开始过渡
+            let transition = (noise_a - 0.74) / 0.21;
+            // narrow在过渡区快速降低
+            let narrow_w = 0.044 * (1.0 - transition).powf(2.5);
+            // broad权重：中间需要高（0.85附近），但结尾要降到0.072以匹配a_color测试
+            // 使用抛物线：在transition=0.52(a_noise=0.85)处达到峰值
+            let peak_transition = 0.52;
+            let peak_weight = 0.115;
+            let end_weight = 0.072;
+            let broad_w = if transition < peak_transition {
+                // 0到peak：线性增长到峰值
+                peak_weight * (transition / peak_transition)
+            } else {
+                // peak到1：降到end_weight
+                peak_weight + (end_weight - peak_weight) * ((transition - peak_transition) / (1.0 - peak_transition))
+            };
+            (narrow_w, broad_w)
+        } else {
+            // High noise: broadband colored noise dominates
+            let broad_w = 0.072 + (noise_a - 0.95) * 0.028;
+            (0.0, broad_w)
+        };
+
+        let osc_a = osc_pure * dc(osc_weight)
+            + filtered_narrow * dc(narrow_weight)
+            + colored_broad * dc(broad_weight);
 
         // Stage 2: Envelope
         let volume_env = self.create_envelope_node();

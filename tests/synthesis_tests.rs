@@ -640,3 +640,529 @@ fn test_vol_fade_1_0() {
     };
     test.run().expect("vol_fade=1.0 测试失败");
 }
+
+// ============================================================================
+// a_noise Tests - 噪声量控制
+// ============================================================================
+
+struct ANoiseTestCase {
+    name: &'static str,
+    config_file: &'static str,
+    reference_file: &'static str,
+    duration: f64,
+}
+
+impl ANoiseTestCase {
+    fn run(&self) -> Result<(), Box<dyn std::error::Error>> {
+        let config_path = Path::new("tests/fixtures/a_noise_tests").join(self.config_file);
+        let reference_path = Path::new("tests/fixtures/a_noise_tests").join(self.reference_file);
+
+        let patch = synplant::SynplantPatch::from_ron_file(&config_path)?;
+        let synth = synthesizer::SynplantSynthesizer::new(patch.genome);
+        let wave = synth.synthesize(self.duration);
+
+        std::fs::create_dir_all("tests/output")?;
+        let output_path = format!("tests/output/test_{}.wav", self.name);
+        wave.save_wav16(&output_path)?;
+
+        let result =
+            audio_compare::compare_noise_wav_files(Path::new(&output_path), &reference_path)?;
+
+        println!("\n测试 '{}' 结果:", self.name);
+        result.print_report();
+
+        const SIMILARITY_THRESHOLD: f64 = 70.0; // 噪声测试使用70%阈值
+        if !result.is_similar(SIMILARITY_THRESHOLD) {
+            return Err(format!(
+                "相似度 {:.2}% 低于阈值 {:.2}%",
+                result.similarity, SIMILARITY_THRESHOLD
+            )
+            .into());
+        }
+
+        Ok(())
+    }
+}
+
+#[test]
+fn test_a_noise_0_0547() {
+    let test = ANoiseTestCase {
+        name: "a_noise_0.0547",
+        config_file: "a_noise_0.0547.ron",
+        reference_file: "a_noise_0.0547.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_noise=0.0547 测试失败");
+}
+
+#[test]
+fn test_a_noise_0_1058() {
+    let test = ANoiseTestCase {
+        name: "a_noise_0.1058",
+        config_file: "a_noise_0.1058.ron",
+        reference_file: "a_noise_0.1058.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_noise=0.1058 测试失败");
+}
+
+#[test]
+fn test_a_noise_0_1496() {
+    let test = ANoiseTestCase {
+        name: "a_noise_0.1496",
+        config_file: "a_noise_0.1496.ron",
+        reference_file: "a_noise_0.1496.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_noise=0.1496 测试失败");
+}
+
+#[test]
+fn test_a_noise_0_2007() {
+    let test = ANoiseTestCase {
+        name: "a_noise_0.2007",
+        config_file: "a_noise_0.2007.ron",
+        reference_file: "a_noise_0.2007.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_noise=0.2007 测试失败");
+}
+
+#[test]
+fn test_a_noise_0_2518() {
+    let test = ANoiseTestCase {
+        name: "a_noise_0.2518",
+        config_file: "a_noise_0.2518.ron",
+        reference_file: "a_noise_0.2518.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_noise=0.2518 测试失败");
+}
+
+#[test]
+fn test_a_noise_0_3102() {
+    let test = ANoiseTestCase {
+        name: "a_noise_0.3102",
+        config_file: "a_noise_0.3102.ron",
+        reference_file: "a_noise_0.3102.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_noise=0.3102 测试失败");
+}
+
+#[test]
+fn test_a_noise_0_3540() {
+    let test = ANoiseTestCase {
+        name: "a_noise_0.3540",
+        config_file: "a_noise_0.3540.ron",
+        reference_file: "a_noise_0.3540.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_noise=0.3540 测试失败");
+}
+
+#[test]
+fn test_a_noise_0_4051() {
+    let test = ANoiseTestCase {
+        name: "a_noise_0.4051",
+        config_file: "a_noise_0.4051.ron",
+        reference_file: "a_noise_0.4051.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_noise=0.4051 测试失败");
+}
+
+#[test]
+fn test_a_noise_0_4536() {
+    let test = ANoiseTestCase {
+        name: "a_noise_0.4536",
+        config_file: "a_noise_0.4536.ron",
+        reference_file: "a_noise_0.4536.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_noise=0.4536 测试失败");
+}
+
+#[test]
+fn test_a_noise_0_4958() {
+    let test = ANoiseTestCase {
+        name: "a_noise_0.4958",
+        config_file: "a_noise_0.4958.ron",
+        reference_file: "a_noise_0.4958.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_noise=0.4958 测试失败");
+}
+
+#[test]
+fn test_a_noise_0_5506() {
+    let test = ANoiseTestCase {
+        name: "a_noise_0.5506",
+        config_file: "a_noise_0.5506.ron",
+        reference_file: "a_noise_0.5506.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_noise=0.5506 测试失败");
+}
+
+#[test]
+fn test_a_noise_0_6055() {
+    let test = ANoiseTestCase {
+        name: "a_noise_0.6055",
+        config_file: "a_noise_0.6055.ron",
+        reference_file: "a_noise_0.6055.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_noise=0.6055 测试失败");
+}
+
+#[test]
+fn test_a_noise_0_6519() {
+    let test = ANoiseTestCase {
+        name: "a_noise_0.6519",
+        config_file: "a_noise_0.6519.ron",
+        reference_file: "a_noise_0.6519.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_noise=0.6519 测试失败");
+}
+
+#[test]
+fn test_a_noise_0_7025() {
+    let test = ANoiseTestCase {
+        name: "a_noise_0.7025",
+        config_file: "a_noise_0.7025.ron",
+        reference_file: "a_noise_0.7025.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_noise=0.7025 测试失败");
+}
+
+#[test]
+fn test_a_noise_0_7489() {
+    let test = ANoiseTestCase {
+        name: "a_noise_0.7489",
+        config_file: "a_noise_0.7489.ron",
+        reference_file: "a_noise_0.7489.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_noise=0.7489 测试失败");
+}
+
+#[test]
+fn test_a_noise_0_8080() {
+    let test = ANoiseTestCase {
+        name: "a_noise_0.8080",
+        config_file: "a_noise_0.8080.ron",
+        reference_file: "a_noise_0.8080.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_noise=0.8080 测试失败");
+}
+
+#[test]
+fn test_a_noise_0_8502() {
+    let test = ANoiseTestCase {
+        name: "a_noise_0.8502",
+        config_file: "a_noise_0.8502.ron",
+        reference_file: "a_noise_0.8502.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_noise=0.8502 测试失败");
+}
+
+#[test]
+fn test_a_noise_0_9051() {
+    let test = ANoiseTestCase {
+        name: "a_noise_0.9051",
+        config_file: "a_noise_0.9051.ron",
+        reference_file: "a_noise_0.9051.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_noise=0.9051 测试失败");
+}
+
+#[test]
+fn test_a_noise_0_9515() {
+    let test = ANoiseTestCase {
+        name: "a_noise_0.9515",
+        config_file: "a_noise_0.9515.ron",
+        reference_file: "a_noise_0.9515.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_noise=0.9515 测试失败");
+}
+
+#[test]
+fn test_a_noise_1_0() {
+    let test = ANoiseTestCase {
+        name: "a_noise_1.0",
+        config_file: "a_noise_1.0.ron",
+        reference_file: "a_noise_1.0.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_noise=1.0 测试失败");
+}
+
+// ============================================================================
+// a_color Tests - 噪声颜色控制
+// ============================================================================
+
+struct AColorTestCase {
+    name: &'static str,
+    config_file: &'static str,
+    reference_file: &'static str,
+    duration: f64,
+}
+
+impl AColorTestCase {
+    fn run(&self) -> Result<(), Box<dyn std::error::Error>> {
+        let config_path = Path::new("tests/fixtures/a_color_tests").join(self.config_file);
+        let reference_path = Path::new("tests/fixtures/a_color_tests").join(self.reference_file);
+
+        let patch = synplant::SynplantPatch::from_ron_file(&config_path)?;
+        let synth = synthesizer::SynplantSynthesizer::new(patch.genome);
+        let wave = synth.synthesize(self.duration);
+
+        std::fs::create_dir_all("tests/output")?;
+        let output_path = format!("tests/output/test_{}.wav", self.name);
+        wave.save_wav16(&output_path)?;
+
+        let result =
+            audio_compare::compare_noise_wav_files(Path::new(&output_path), &reference_path)?;
+
+        println!("\n测试 '{}' 结果:", self.name);
+        result.print_report();
+
+        const SIMILARITY_THRESHOLD: f64 = 70.0; // 噪声测试使用70%阈值
+        if !result.is_similar(SIMILARITY_THRESHOLD) {
+            return Err(format!(
+                "相似度 {:.2}% 低于阈值 {:.2}%",
+                result.similarity, SIMILARITY_THRESHOLD
+            )
+            .into());
+        }
+
+        Ok(())
+    }
+}
+
+#[test]
+fn test_a_color_0_0() {
+    let test = AColorTestCase {
+        name: "a_color_0.0",
+        config_file: "a_color_0.0.ron",
+        reference_file: "a_color_0.0.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_color=0.0 测试失败");
+}
+
+#[test]
+fn test_a_color_0_0547() {
+    let test = AColorTestCase {
+        name: "a_color_0.0547",
+        config_file: "a_color_0.0547.ron",
+        reference_file: "a_color_0.0547.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_color=0.0547 测试失败");
+}
+
+#[test]
+fn test_a_color_0_1058() {
+    let test = AColorTestCase {
+        name: "a_color_0.1058",
+        config_file: "a_color_0.1058.ron",
+        reference_file: "a_color_0.1058.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_color=0.1058 测试失败");
+}
+
+#[test]
+fn test_a_color_0_1496() {
+    let test = AColorTestCase {
+        name: "a_color_0.1496",
+        config_file: "a_color_0.1496.ron",
+        reference_file: "a_color_0.1496.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_color=0.1496 测试失败");
+}
+
+#[test]
+fn test_a_color_0_2007() {
+    let test = AColorTestCase {
+        name: "a_color_0.2007",
+        config_file: "a_color_0.2007.ron",
+        reference_file: "a_color_0.2007.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_color=0.2007 测试失败");
+}
+
+#[test]
+fn test_a_color_0_2518() {
+    let test = AColorTestCase {
+        name: "a_color_0.2518",
+        config_file: "a_color_0.2518.ron",
+        reference_file: "a_color_0.2518.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_color=0.2518 测试失败");
+}
+
+#[test]
+fn test_a_color_0_3102() {
+    let test = AColorTestCase {
+        name: "a_color_0.3102",
+        config_file: "a_color_0.3102.ron",
+        reference_file: "a_color_0.3102.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_color=0.3102 测试失败");
+}
+
+#[test]
+fn test_a_color_0_3540() {
+    let test = AColorTestCase {
+        name: "a_color_0.3540",
+        config_file: "a_color_0.3540.ron",
+        reference_file: "a_color_0.3540.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_color=0.3540 测试失败");
+}
+
+#[test]
+fn test_a_color_0_4051() {
+    let test = AColorTestCase {
+        name: "a_color_0.4051",
+        config_file: "a_color_0.4051.ron",
+        reference_file: "a_color_0.4051.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_color=0.4051 测试失败");
+}
+
+#[test]
+fn test_a_color_0_4536() {
+    let test = AColorTestCase {
+        name: "a_color_0.4536",
+        config_file: "a_color_0.4536.ron",
+        reference_file: "a_color_0.4536.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_color=0.4536 测试失败");
+}
+
+#[test]
+fn test_a_color_0_5506() {
+    let test = AColorTestCase {
+        name: "a_color_0.5506",
+        config_file: "a_color_0.5506.ron",
+        reference_file: "a_color_0.5506.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_color=0.5506 测试失败");
+}
+
+#[test]
+fn test_a_color_0_6055() {
+    let test = AColorTestCase {
+        name: "a_color_0.6055",
+        config_file: "a_color_0.6055.ron",
+        reference_file: "a_color_0.6055.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_color=0.6055 测试失败");
+}
+
+#[test]
+fn test_a_color_0_6519() {
+    let test = AColorTestCase {
+        name: "a_color_0.6519",
+        config_file: "a_color_0.6519.ron",
+        reference_file: "a_color_0.6519.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_color=0.6519 测试失败");
+}
+
+#[test]
+fn test_a_color_0_7025() {
+    let test = AColorTestCase {
+        name: "a_color_0.7025",
+        config_file: "a_color_0.7025.ron",
+        reference_file: "a_color_0.7025.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_color=0.7025 测试失败");
+}
+
+#[test]
+fn test_a_color_0_7489() {
+    let test = AColorTestCase {
+        name: "a_color_0.7489",
+        config_file: "a_color_0.7489.ron",
+        reference_file: "a_color_0.7489.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_color=0.7489 测试失败");
+}
+
+#[test]
+fn test_a_color_0_8080() {
+    let test = AColorTestCase {
+        name: "a_color_0.8080",
+        config_file: "a_color_0.8080.ron",
+        reference_file: "a_color_0.8080.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_color=0.8080 测试失败");
+}
+
+#[test]
+fn test_a_color_0_8502() {
+    let test = AColorTestCase {
+        name: "a_color_0.8502",
+        config_file: "a_color_0.8502.ron",
+        reference_file: "a_color_0.8502.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_color=0.8502 测试失败");
+}
+
+#[test]
+fn test_a_color_0_9051() {
+    let test = AColorTestCase {
+        name: "a_color_0.9051",
+        config_file: "a_color_0.9051.ron",
+        reference_file: "a_color_0.9051.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_color=0.9051 测试失败");
+}
+
+#[test]
+fn test_a_color_0_9515() {
+    let test = AColorTestCase {
+        name: "a_color_0.9515",
+        config_file: "a_color_0.9515.ron",
+        reference_file: "a_color_0.9515.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_color=0.9515 测试失败");
+}
+
+#[test]
+fn test_a_color_1_0() {
+    let test = AColorTestCase {
+        name: "a_color_1.0",
+        config_file: "a_color_1.0.ron",
+        reference_file: "a_color_1.0.wav",
+        duration: 7.24,
+    };
+    test.run().expect("a_color=1.0 测试失败");
+}
