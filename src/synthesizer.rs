@@ -30,32 +30,14 @@ impl SynplantSynthesizer {
         An(RmsCompensator)
     }
 
-    /// 创建默认的音量包络节点
-    fn create_envelope_node(&self) -> An<impl AudioNode<Inputs = U0, Outputs = U1>> {
-        let vol_atk = self.genome.vol_atk as f64;
-        let sustain_level = self.genome.vol_sus as f64;
-        // TODO: Implement full ADSR envelope (Decay, Release/Fade)
-        // TODO: Implement envelope looping if env_loop > 0
-
-        // For now, simple Attack-Sustain
-        let attack_time = 0.01;
-
-        envelope(move |t| {
-            if t < attack_time {
-                let progress = t / attack_time;
-                if vol_atk < 0.5 {
-                    let curve = 2.0 - vol_atk * 4.0;
-                    progress.powf(curve.max(1.0))
-                } else {
-                    let curve = (vol_atk - 0.5) * 4.0 + 1.0;
-                    progress.powf(1.0 / curve)
-                }
-            } else {
-                sustain_level
-            }
-        })
-    }
-
+        /// 创建默认的音量包络节点
+        fn create_envelope_node(&self) -> An<impl AudioNode<Inputs = U0, Outputs = U1>> {
+            crate::dsp::envelope::create_envelope(
+                self.genome.vol_atk,
+                self.genome.vol_dcy,
+                self.genome.vol_sus,
+            )
+        }
     /// 构建滤波器部分
     fn build_filter_node(&self, freq: f32) -> An<impl AudioNode<Inputs = U1, Outputs = U1>> {
         // TODO: Implement different filter types based on `flt_type`
