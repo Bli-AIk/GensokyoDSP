@@ -1,13 +1,17 @@
 use fundsp::hacker::*;
 
 pub fn create_envelope(
-    vol_atk: f32, vol_dcy: f32, vol_sus: f32, env_time: f32,
+    vol_atk: f32,
+    vol_dcy: f32,
+    vol_sus: f32,
+    env_time: f32,
+    vol_fade: f32,
 ) -> An<impl AudioNode<Inputs = U0, Outputs = U1>> {
     // Attack time mapping based on vol_atk
     // Empirically measured from reference files:
     // The curve is highly non-monotonic with multiple peaks and valleys
     let attack_time = if vol_atk < 0.001 {
-        0.20  // vol_atk=0.0
+        0.20 // vol_atk=0.0
     } else if vol_atk <= 0.0547 {
         // 0.0->0.20, 0.0547->0.08
         let t = (vol_atk as f64) / 0.0547;
@@ -73,19 +77,19 @@ pub fn create_envelope(
         let t = (vol_atk as f64 - 0.9515) / (1.0 - 0.9515);
         0.22 + t * (0.10 - 0.22)
     };
-    
+
     // Decay time influenced by vol_dcy and vol_sus
     // For vol_sus < 0.5: decay time to reach 10% is about 0.66s when vol_dcy=0.5
     let decay_time = if vol_sus < 0.5 {
         // Base decay time scaled by vol_dcy
-        let base_time = 1.3;  // Time to reach ~10% for vol_dcy=0.5
+        let base_time = 1.3; // Time to reach ~10% for vol_dcy=0.5
         base_time * (0.2 + vol_dcy as f64 * 1.6)
     } else {
         // Longer decay for higher sustain
         let base = 0.4 + (vol_sus as f64 - 0.5) * 10.0;
         base * (0.5 + vol_dcy as f64)
     };
-    
+
     // Decay curve shape
     // For no-sustain sounds, use exponential decay
     let decay_power = if vol_sus < 0.5 {
@@ -97,7 +101,7 @@ pub fn create_envelope(
         // At vol_dcy=0.5, exponential curve (power ~2.5)
         2.5
     };
-    
+
     // Sustain level - empirically measured
     // The curve starts around 0.4 and grows to 100% at 1.0
     let sustain_level = if vol_sus < 0.40 {
@@ -168,7 +172,7 @@ pub fn create_envelope(
     // Attack curve power - empirically determined
     // Different vol_atk values produce different curve shapes
     let attack_power = if vol_atk <= 0.06 {
-        0.93  // Nearly linear for very small values
+        0.93 // Nearly linear for very small values
     } else if vol_atk <= 0.35 {
         // Power increases with vol_atk, peaks around 3.0
         let t = (vol_atk as f64 - 0.06) / (0.35 - 0.06);
@@ -186,8 +190,51 @@ pub fn create_envelope(
         1.06 + t * (3.0 - 1.06)
     };
 
+    // Vol fade settings
+    // According to documentation: "设置高于0.75会激活淡出"
+    // From empirical measurements:
+    // - vol_fade < 0.75: no fade or very late fade (after 5s)
+    // - vol_fade >= 0.75: fade starts shortly after peak
+    let fade_active = vol_fade >= 0.75;
+    let (fade_start_time, fade_duration) = if fade_active {
+        // Empirically measured fade parameters (from 90% to 10% of peak)
+        // fade_start is relative to peak time, which is roughly at attack_time
+        let fade_dur = if vol_fade < 0.8080 {
+            // 0.75-0.7489: late fade (~5.5s start, ~0.9s duration)
+            // This is essentially no fade for our purposes
+            10.0 // Very long fade = effectively no fade
+        } else if vol_fade <= 0.8080 {
+            // vol_fade=0.8080: fade duration ~5.355s (from peak+0.31s to peak+5.665s)
+            5.355
+        } else if vol_fade <= 0.8502 {
+            // Linear interpolation: 0.8080->5.355s, 0.8502->2.516s
+            let t = (vol_fade as f64 - 0.8080) / (0.8502 - 0.8080);
+            5.355 + t * (2.516 - 5.355)
+        } else if vol_fade <= 0.9051 {
+            // 0.8502->2.516s, 0.9051->0.600s
+            let t = (vol_fade as f64 - 0.8502) / (0.9051 - 0.8502);
+            2.516 + t * (0.600 - 2.516)
+        } else if vol_fade <= 0.9515 {
+            // 0.9051->0.600s, 0.9515->0.204s
+            let t = (vol_fade as f64 - 0.9051) / (0.9515 - 0.9051);
+            0.600 + t * (0.204 - 0.600)
+        } else {
+            // 0.9515->0.204s, 1.0->0.067s
+            // Extend duration slightly to match tail behavior
+            let t = (vol_fade as f64 - 0.9515) / (1.0 - 0.9515);
+            (0.204 + t * (0.067 - 0.204)) * 1.10
+        };
+        // Fade starts shortly after peak (at attack_time)
+        // Measured offset is ~6ms, use 3ms for better alignment
+        let fade_start = attack_time + 0.003;
+        (fade_start, fade_dur)
+    } else {
+        (1000.0, 1.0) // No fade
+    };
+
     envelope(move |t| {
-        if t < attack_time {
+        // Calculate base envelope value
+        let base_envelope = if t < attack_time {
             // Attack phase
             let progress = t / attack_time;
             progress.powf(attack_power)
@@ -210,6 +257,21 @@ pub fn create_envelope(
                     sustain_level
                 }
             }
+        };
+
+        // Apply fade if active
+        if fade_active && t >= fade_start_time {
+            let fade_progress = (t - fade_start_time) / fade_duration;
+            if fade_progress >= 1.0 {
+                0.0
+            } else {
+                // Exponential fade curve
+                // Empirically determined power value
+                let fade_multiplier = (1.0 - fade_progress).powf(1.94);
+                base_envelope * fade_multiplier
+            }
+        } else {
+            base_envelope
         }
     })
 }

@@ -12,8 +12,12 @@ struct TestCase {
 
 impl TestCase {
     fn run(&self) -> Result<(), Box<dyn std::error::Error>> {
-        let config_path = Path::new("tests/fixtures").join(self.folder).join(self.config_file);
-        let reference_path = Path::new("tests/fixtures").join(self.folder).join(self.reference_file);
+        let config_path = Path::new("tests/fixtures")
+            .join(self.folder)
+            .join(self.config_file);
+        let reference_path = Path::new("tests/fixtures")
+            .join(self.folder)
+            .join(self.reference_file);
 
         // 加载配置
         let patch = synplant::SynplantPatch::from_ron_file(&config_path)?;
@@ -57,7 +61,7 @@ fn test_vol_atk_0_0547() {
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.0547 failed");
-} 
+}
 
 #[test]
 fn test_vol_atk_0_1058() {
@@ -69,7 +73,7 @@ fn test_vol_atk_0_1058() {
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.1058 failed");
-} 
+}
 
 #[test]
 fn test_vol_atk_0_1496() {
@@ -81,7 +85,7 @@ fn test_vol_atk_0_1496() {
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.1496 failed");
-} 
+}
 
 #[test]
 fn test_vol_atk_0_2007() {
@@ -93,7 +97,7 @@ fn test_vol_atk_0_2007() {
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.2007 failed");
-} 
+}
 
 #[test]
 fn test_vol_atk_0_2518() {
@@ -105,7 +109,7 @@ fn test_vol_atk_0_2518() {
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.2518 failed");
-} 
+}
 
 #[test]
 fn test_vol_atk_0_3102() {
@@ -117,7 +121,7 @@ fn test_vol_atk_0_3102() {
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.3102 failed");
-} 
+}
 
 #[test]
 fn test_vol_atk_0_3540() {
@@ -129,7 +133,7 @@ fn test_vol_atk_0_3540() {
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.3540 failed");
-} 
+}
 
 #[test]
 fn test_vol_atk_0_4051() {
@@ -141,7 +145,7 @@ fn test_vol_atk_0_4051() {
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.4051 failed");
-} 
+}
 
 #[test]
 fn test_vol_atk_0_4536() {
@@ -153,7 +157,7 @@ fn test_vol_atk_0_4536() {
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.4536 failed");
-} 
+}
 
 #[test]
 fn test_vol_atk_0_4958() {
@@ -165,7 +169,7 @@ fn test_vol_atk_0_4958() {
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.4958 failed");
-} 
+}
 
 #[test]
 fn test_vol_atk_0_5506() {
@@ -177,7 +181,7 @@ fn test_vol_atk_0_5506() {
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.5506 failed");
-} 
+}
 
 #[test]
 fn test_vol_atk_0_6055() {
@@ -189,7 +193,7 @@ fn test_vol_atk_0_6055() {
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.6055 failed");
-} 
+}
 
 #[test]
 fn test_vol_atk_0_6519() {
@@ -201,7 +205,7 @@ fn test_vol_atk_0_6519() {
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.6519 failed");
-} 
+}
 
 #[test]
 fn test_vol_atk_0_7025() {
@@ -213,7 +217,7 @@ fn test_vol_atk_0_7025() {
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.7025 failed");
-} 
+}
 
 #[test]
 fn test_vol_atk_0_7489() {
@@ -225,7 +229,7 @@ fn test_vol_atk_0_7489() {
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.7489 failed");
-} 
+}
 
 #[test]
 fn test_vol_atk_0_8080() {
@@ -237,7 +241,7 @@ fn test_vol_atk_0_8080() {
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.8080 failed");
-} 
+}
 
 #[test]
 fn test_vol_atk_0_8502() {
@@ -249,7 +253,7 @@ fn test_vol_atk_0_8502() {
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.8502 failed");
-} 
+}
 
 #[test]
 fn test_vol_atk_0_9051() {
@@ -261,7 +265,7 @@ fn test_vol_atk_0_9051() {
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.9051 failed");
-} 
+}
 
 #[test]
 fn test_vol_atk_0_9515() {
@@ -273,7 +277,7 @@ fn test_vol_atk_0_9515() {
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.9515 failed");
-} 
+}
 
 #[test]
 fn test_vol_atk_1_0() {
@@ -285,7 +289,7 @@ fn test_vol_atk_1_0() {
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_1.0 failed");
-} 
+}
 
 #[test]
 fn test_vol_sus_0_0() {
@@ -297,7 +301,7 @@ fn test_vol_sus_0_0() {
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.0 failed");
-} 
+}
 
 #[test]
 fn test_vol_sus_0_0547() {
@@ -309,7 +313,7 @@ fn test_vol_sus_0_0547() {
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.0547 failed");
-} 
+}
 
 #[test]
 fn test_vol_sus_0_1058() {
@@ -321,7 +325,7 @@ fn test_vol_sus_0_1058() {
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.1058 failed");
-} 
+}
 
 #[test]
 fn test_vol_sus_0_1496() {
@@ -333,7 +337,7 @@ fn test_vol_sus_0_1496() {
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.1496 failed");
-} 
+}
 
 #[test]
 fn test_vol_sus_0_2007() {
@@ -345,7 +349,7 @@ fn test_vol_sus_0_2007() {
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.2007 failed");
-} 
+}
 
 #[test]
 fn test_vol_sus_0_2518() {
@@ -357,7 +361,7 @@ fn test_vol_sus_0_2518() {
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.2518 failed");
-} 
+}
 
 #[test]
 fn test_vol_sus_0_3102() {
@@ -369,7 +373,7 @@ fn test_vol_sus_0_3102() {
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.3102 failed");
-} 
+}
 
 #[test]
 fn test_vol_sus_0_3540() {
@@ -381,7 +385,7 @@ fn test_vol_sus_0_3540() {
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.3540 failed");
-} 
+}
 
 #[test]
 fn test_vol_sus_0_4051() {
@@ -393,7 +397,7 @@ fn test_vol_sus_0_4051() {
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.4051 failed");
-} 
+}
 
 #[test]
 fn test_vol_sus_0_4536() {
@@ -405,7 +409,7 @@ fn test_vol_sus_0_4536() {
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.4536 failed");
-} 
+}
 
 #[test]
 fn test_vol_sus_0_4958() {
@@ -417,7 +421,7 @@ fn test_vol_sus_0_4958() {
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.4958 failed");
-} 
+}
 
 #[test]
 fn test_vol_sus_0_5506() {
@@ -429,7 +433,7 @@ fn test_vol_sus_0_5506() {
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.5506 failed");
-} 
+}
 
 #[test]
 fn test_vol_sus_0_6055() {
@@ -441,7 +445,7 @@ fn test_vol_sus_0_6055() {
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.6055 failed");
-} 
+}
 
 #[test]
 fn test_vol_sus_0_6519() {
@@ -453,7 +457,7 @@ fn test_vol_sus_0_6519() {
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.6519 failed");
-} 
+}
 
 #[test]
 fn test_vol_sus_0_7025() {
@@ -465,7 +469,7 @@ fn test_vol_sus_0_7025() {
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.7025 failed");
-} 
+}
 
 #[test]
 fn test_vol_sus_0_7489() {
@@ -477,7 +481,7 @@ fn test_vol_sus_0_7489() {
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.7489 failed");
-} 
+}
 
 #[test]
 fn test_vol_sus_0_8080() {
@@ -489,7 +493,7 @@ fn test_vol_sus_0_8080() {
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.8080 failed");
-} 
+}
 
 #[test]
 fn test_vol_sus_0_8502() {
@@ -501,7 +505,7 @@ fn test_vol_sus_0_8502() {
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.8502 failed");
-} 
+}
 
 #[test]
 fn test_vol_sus_0_9051() {
@@ -513,7 +517,7 @@ fn test_vol_sus_0_9051() {
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.9051 failed");
-} 
+}
 
 #[test]
 fn test_vol_sus_0_9515() {
@@ -525,4 +529,4 @@ fn test_vol_sus_0_9515() {
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.9515 failed");
-} 
+}

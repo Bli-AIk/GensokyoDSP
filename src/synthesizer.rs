@@ -30,15 +30,16 @@ impl SynplantSynthesizer {
         An(RmsCompensator)
     }
 
-        /// 创建默认的音量包络节点
-        fn create_envelope_node(&self) -> An<impl AudioNode<Inputs = U0, Outputs = U1>> {
-            crate::dsp::envelope::create_envelope(
-                self.genome.vol_atk,
-                self.genome.vol_dcy,
-                self.genome.vol_sus,
-                self.genome.env_time,
-            )
-        }
+    /// 创建默认的音量包络节点
+    fn create_envelope_node(&self) -> An<impl AudioNode<Inputs = U0, Outputs = U1>> {
+        crate::dsp::envelope::create_envelope(
+            self.genome.vol_atk,
+            self.genome.vol_dcy,
+            self.genome.vol_sus,
+            self.genome.env_time,
+            self.genome.vol_fade,
+        )
+    }
     /// 构建滤波器部分
     fn build_filter_node(&self, freq: f32) -> An<impl AudioNode<Inputs = U1, Outputs = U1>> {
         // TODO: Implement different filter types based on `flt_type`

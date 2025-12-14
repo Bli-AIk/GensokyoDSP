@@ -1,3 +1,3 @@
-pub mod oscillator;
 pub mod compensator;
 pub mod envelope;
+pub mod oscillator;
