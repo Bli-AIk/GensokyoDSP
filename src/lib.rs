@@ -1,4 +1,5 @@
 pub mod audio_compare;
+pub mod dsp;
 pub mod synplant;
 pub mod synthesizer;
 
