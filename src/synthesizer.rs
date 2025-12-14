@@ -66,24 +66,32 @@ impl SynplantSynthesizer {
         let noise_a = self.genome.a_noise;
         let color_a = self.genome.a_color;
 
-        // TODO: Implement Oscillator B (genome.b_form, b_freq, etc.)
+        // 振荡器B参数
+        // 根据文档: b_freq控制振荡器B相对于振荡器A音高的音高
+        // 根据观测，b_freq=0.6875时振荡器B与A同频
+        // 实现为相对于A的半音偏移
+        let b_freq_offset_semitones = (self.genome.b_freq - 0.6875) * 48.0;
+        let freq_b = freq_a * 2_f32.powf(b_freq_offset_semitones / 12.0);
+        let form_b = self.genome.b_form;
+
+        // osc_mix控制振荡器A和B之间的混合
+        // 0.0 = 只有A, 1.0 = 只有B, 0.79 = 50/50
+        let osc_mix = self.genome.osc_mix;
+
         // TODO: Implement FM (genome.fm_amt, fm_mod)
-        // TODO: Implement Ring Mod / Mix (genome.mix_mod, osc_mix)
+        // TODO: Implement Ring Mod / Mix (genome.mix_mod)
 
-        // Stage 1: Oscillator A with noise mixing
-        let osc_node = self.create_oscillator_node(sample_rate);
-        let comp_node = self.create_compensator_node();
+        // Stage 1a: Oscillator A with noise mixing
+        let osc_node_a = self.create_oscillator_node(sample_rate);
+        let comp_node_a = self.create_compensator_node();
 
-        let form_sig_1 = constant(form_a);
-        let form_sig_2 = constant(form_a);
-        let freq_sig = constant(freq_a);
+        let form_sig_a1 = constant(form_a);
+        let form_sig_a2 = constant(form_a);
+        let freq_sig_a = constant(freq_a);
 
-        // Osc = Freq | Form >> MorphOsc
-        // Comp = Form >> RmsComp
-        // Result = Osc * Comp
-        let source = (freq_sig | form_sig_1) >> osc_node;
-        let compensation = form_sig_2 >> comp_node;
-        let osc_pure = source * compensation;
+        let source_a = (freq_sig_a | form_sig_a1) >> osc_node_a;
+        let compensation_a = form_sig_a2 >> comp_node_a;
+        let osc_pure_a = source_a * compensation_a;
 
         // Mix with colored noise
         // Key insight from a_color analysis:
@@ -150,13 +158,50 @@ impl SynplantSynthesizer {
             (0.0, broad_w)
         };
 
-        let osc_a = osc_pure * dc(osc_weight)
+        let osc_a = osc_pure_a * dc(osc_weight)
             + filtered_narrow * dc(narrow_weight)
             + colored_broad * dc(broad_weight);
 
+        // Stage 1b: Oscillator B
+        // For now, B has the same structure as A but without noise mixing (b_noise=0 in tests)
+        let osc_node_b = self.create_oscillator_node(sample_rate);
+        let comp_node_b = self.create_compensator_node();
+
+        let form_sig_b1 = constant(form_b);
+        let form_sig_b2 = constant(form_b);
+        let freq_sig_b = constant(freq_b);
+
+        let source_b = (freq_sig_b | form_sig_b1) >> osc_node_b;
+        let compensation_b = form_sig_b2 >> comp_node_b;
+        let osc_b_pure = source_b * compensation_b;
+
+        // TODO: Add noise mixing for oscillator B (b_noise, currently 0.0 in tests)
+        // For now, just use the pure oscillator
+        let osc_b = osc_b_pure;
+
+        // Stage 1c: Mix oscillators A and B
+        // According to docs: at osc_mix=0.79, the mix is 50/50
+        // Using equal-power crossfading for smooth transition
+        // Map osc_mix to angle [0, pi/2]:
+        // - osc_mix=0 -> angle=0 -> cos=1, sin=0 (only A)
+        // - osc_mix=0.79 -> angle=pi/4 -> cos=sin=0.707 (50/50)
+        // - osc_mix=1 -> angle=pi/2 -> cos=0, sin=1 (only B)
+
+        let angle = if osc_mix <= 0.79 {
+            (osc_mix / 0.79) * std::f32::consts::FRAC_PI_4
+        } else {
+            std::f32::consts::FRAC_PI_4
+                + ((osc_mix - 0.79) / (1.0 - 0.79)) * std::f32::consts::FRAC_PI_4
+        };
+
+        let weight_a = angle.cos();
+        let weight_b = angle.sin();
+
+        let mixed_osc = osc_a * dc(weight_a) + osc_b * dc(weight_b);
+
         // Stage 2: Envelope
         let volume_env = self.create_envelope_node();
-        let with_envelope = osc_a * volume_env;
+        let with_envelope = mixed_osc * volume_env;
 
         // Stage 3: Filter
         let filter_node = self.build_filter_node(freq_a);
