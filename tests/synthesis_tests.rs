@@ -346,7 +346,7 @@ fn test_a_form_linear() {
     // 由于动态调制过程中存在微小的相位漂移和时序差异，导致波形相关性下降。
     // 静态测试(test_a_form_*)均通过(>98%)，证明波形合成算法本身是正确的。
     // 因此这里适当降低动态测试的相似度阈值。
-    const SIMILARITY_THRESHOLD: f64 = 75.0;
+    const SIMILARITY_THRESHOLD: f64 = 80.0;
     assert!(
         result.is_similar(SIMILARITY_THRESHOLD),
         "相似度 {:.2}% 低于阈值 {:.2}%",
@@ -671,7 +671,7 @@ impl ANoiseTestCase {
         println!("\n测试 '{}' 结果:", self.name);
         result.print_report();
 
-        const SIMILARITY_THRESHOLD: f64 = 90.0; // 噪声测试使用90%阈值
+        const SIMILARITY_THRESHOLD: f64 = 95.0; // 噪声测试使用90%阈值
         if !result.is_similar(SIMILARITY_THRESHOLD) {
             return Err(format!(
                 "相似度 {:.2}% 低于阈值 {:.2}%",

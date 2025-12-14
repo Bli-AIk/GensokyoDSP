@@ -6,3 +6,5 @@ output_*.wav
 
 # 开发文件
 /dev
+
+/tests/output

@@ -110,7 +110,7 @@ impl SynplantSynthesizer {
         // - ratio jumps to 0.014 at 0.85
         // - ratio reaches 4.1 at 0.95
         // - ratio reaches 16.3 at 1.0
-        
+
         // Oscillator weight: balance between energy and noise visibility
         let osc_weight = if noise_a < 0.85 {
             // Reduce more linearly to match reference RMS: from 1.0 to 0.65 at 0.85
@@ -121,7 +121,7 @@ impl SynplantSynthesizer {
             let t = (noise_a - 0.85) / 0.10;
             0.65 * (1.0 - t).powf(2.5)
         } else {
-            0.0  // No oscillator at full noise
+            0.0 // No oscillator at full noise
         };
 
         // Noise mixing: keep very low until 0.85, then grow
@@ -132,10 +132,10 @@ impl SynplantSynthesizer {
         } else if noise_a < 0.95 {
             // Phase 2: Rapid transition (0.85 - 0.95)
             let t = (noise_a - 0.85) / 0.10;
-            
+
             // Narrow fades out
             let narrow_w = 0.0005 * 0.85 * (1.0 - t).powf(2.0);
-            
+
             // Broad grows: need to match target noise/fund ratios
             // At 0.85: aim for 0.014, try 0.015
             // At 0.95: need ~0.11 for strong noise

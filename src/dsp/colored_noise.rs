@@ -52,7 +52,8 @@ impl ColoredNoise {
         self.b3 = 0.86650 * self.b3 + white * 0.3104856;
         self.b4 = 0.55000 * self.b4 + white * 0.5329522;
         self.b5 = -0.7616 * self.b5 - white * 0.0168980;
-        let pink = self.b0 + self.b1 + self.b2 + self.b3 + self.b4 + self.b5 + self.b6 + white * 0.5362;
+        let pink =
+            self.b0 + self.b1 + self.b2 + self.b3 + self.b4 + self.b5 + self.b6 + white * 0.5362;
         self.b6 = white * 0.115926;
 
         // 棕色噪声：积分白噪声
@@ -77,22 +78,22 @@ impl ColoredNoise {
         // color=0.25-0.45: 1.29-1.42倍 - 稍高，可接受
         // color=0.55: 0.97倍 - 完美！
         // color=0.6-1.0: 0.37-0.72倍 - 需要提高2-3倍
-        
+
         let gain = if self.color < 0.2 {
             // 低color：保持不变
-            0.57 + self.color * 0.25  // 0.57 -> 0.62
+            0.57 + self.color * 0.25 // 0.57 -> 0.62
         } else if self.color < 0.4 {
             // 低到中color：略微降低
-            0.62 - (self.color - 0.2) * 1.1  // 0.62 -> 0.40
+            0.62 - (self.color - 0.2) * 1.1 // 0.62 -> 0.40
         } else if self.color < 0.52 {
             // 中color：降低到最小（调整拐点从0.55到0.52）
-            0.40 - (self.color - 0.4) * 1.7  // 0.40 -> 0.20
+            0.40 - (self.color - 0.4) * 1.7 // 0.40 -> 0.20
         } else if self.color < 0.7 {
             // 中高color：快速增加（0.5506需要约0.27）
-            0.20 + (self.color - 0.52) * 1.6  // 0.20 -> 0.49
+            0.20 + (self.color - 0.52) * 1.6 // 0.20 -> 0.49
         } else {
             // 高color：继续增加
-            0.49 + (self.color - 0.7) * 1.4  // 0.49 -> 0.91
+            0.49 + (self.color - 0.7) * 1.4 // 0.49 -> 0.91
         };
 
         mixed * gain
