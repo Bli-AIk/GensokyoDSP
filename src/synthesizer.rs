@@ -104,39 +104,49 @@ impl SynplantSynthesizer {
         // The ColoredNoise generator already shapes the spectrum based on a_color
         let colored_broad = noise_broad;
 
-        let osc_weight = 1.0 - noise_a;
+        // Based on analysis: noise should be nearly inaudible until ~0.85
+        // Key observations from reference audio:
+        // - noise/fund ratio < 0.0002 for a_noise < 0.85
+        // - ratio jumps to 0.014 at 0.85
+        // - ratio reaches 4.1 at 0.95
+        // - ratio reaches 16.3 at 1.0
+        
+        // Oscillator weight: balance between energy and noise visibility
+        let osc_weight = if noise_a < 0.85 {
+            // Reduce more linearly to match reference RMS: from 1.0 to 0.65 at 0.85
+            // This gives better RMS match in low noise region
+            1.0 - noise_a * 0.41
+        } else if noise_a < 0.95 {
+            // Rapid drop in transition zone
+            let t = (noise_a - 0.85) / 0.10;
+            0.65 * (1.0 - t).powf(2.5)
+        } else {
+            0.0  // No oscillator at full noise
+        };
 
-        // Mixing weights calibrated for correct RMS levels
-        let (narrow_weight, broad_weight) = if noise_a < 0.35 {
-            // Low noise: narrow-band filtered colored noise
-            (noise_a * 0.022, 0.0)
-        } else if noise_a < 0.74 {
-            // Mid noise: gradually increase narrow-band
-            let t = (noise_a - 0.35) / 0.39;
-            let narrow_w = 0.0077 + t * (0.044 - 0.0077);
+        // Noise mixing: keep very low until 0.85, then grow
+        let (narrow_weight, broad_weight) = if noise_a < 0.85 {
+            // Phase 1: Nearly inaudible noise (< 0.85)
+            let narrow_w = noise_a * 0.0005;
             (narrow_w, 0.0)
         } else if noise_a < 0.95 {
-            // Transition: from narrow filtered to broad colored
-            // 从0.74开始过渡
-            let transition = (noise_a - 0.74) / 0.21;
-            // narrow在过渡区快速降低
-            let narrow_w = 0.044 * (1.0 - transition).powf(2.5);
-            // broad权重：中间需要高（0.85附近），但结尾要降到0.072以匹配a_color测试
-            // 使用抛物线：在transition=0.52(a_noise=0.85)处达到峰值
-            let peak_transition = 0.52;
-            let peak_weight = 0.115;
-            let end_weight = 0.072;
-            let broad_w = if transition < peak_transition {
-                // 0到peak：线性增长到峰值
-                peak_weight * (transition / peak_transition)
-            } else {
-                // peak到1：降到end_weight
-                peak_weight + (end_weight - peak_weight) * ((transition - peak_transition) / (1.0 - peak_transition))
-            };
+            // Phase 2: Rapid transition (0.85 - 0.95)
+            let t = (noise_a - 0.85) / 0.10;
+            
+            // Narrow fades out
+            let narrow_w = 0.0005 * 0.85 * (1.0 - t).powf(2.0);
+            
+            // Broad grows: need to match target noise/fund ratios
+            // At 0.85: aim for 0.014, try 0.015
+            // At 0.95: need ~0.11 for strong noise
+            let broad_w = 0.015 + t.powf(1.8) * 0.095;
             (narrow_w, broad_w)
         } else {
-            // High noise: broadband colored noise dominates
-            let broad_w = 0.072 + (noise_a - 0.95) * 0.028;
+            // Phase 3: Full noise (0.95 - 1.0)
+            // Slightly reduce from 0.08 to balance RMS
+            // At 0.95: 0.08, at 1.0: 0.075
+            let t = (noise_a - 0.95) / 0.05;
+            let broad_w = 0.08 - t * 0.005;
             (0.0, broad_w)
         };
 
@@ -155,8 +165,21 @@ impl SynplantSynthesizer {
         // TODO: Implement Effects (Saturate, Reverb, EQ, Pan)
 
         // Global gain adjustment to match reference amplitude
-        // Empirically determined: our output is about 70% of reference
-        let gain_adjusted = filtered * dc(1.42);
+        // Compensate for varying osc_weight to maintain consistent RMS
+        let gain = if noise_a < 0.85 {
+            // Dynamic gain with maximum compensation for mid-high range
+            1.0 + (1.0 - osc_weight) * 1.0
+        } else if noise_a < 0.95 {
+            // Transition zone: need much higher gain as osc_weight drops
+            // At 0.85: gain=1.35, at 0.90: gain~2.2, at 0.95: gain~3.2
+            let base_gain = 1.0 + (1.0 - osc_weight) * 1.0;
+            let t = (noise_a - 0.85) / 0.10;
+            base_gain.max(1.35 + t * 1.85)
+        } else {
+            // Pure noise: reduce gain to match reference
+            1.42
+        };
+        let gain_adjusted = filtered * dc(gain);
 
         let mut graph = gain_adjusted >> split::<U2>();
 
