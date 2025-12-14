@@ -22,11 +22,46 @@ pub fn compare_wav_files(
     let channels = std::cmp::min(wave1.channels(), wave2.channels());
 
     // 首先找到最佳时间偏移（使用第一个声道）
-    let max_lag = (0.1 * wave1.sample_rate()) as isize; // 最多100ms的偏移
+    let max_lag = (0.5 * wave1.sample_rate()) as isize; // 最多500ms的偏移
+    let lag_step = (wave1.sample_rate() * 0.01) as isize; // 10ms步长
     let mut best_correlation = f64::NEG_INFINITY;
     let mut best_lag = 0_isize;
 
-    for lag in -max_lag..=max_lag {
+    // 粗略搜索
+    for lag in (-max_lag..=max_lag).step_by(std::cmp::max(lag_step, 1) as usize) {
+        let mut corr = 0.0_f64;
+        let mut count = 0;
+
+        // 使用较少的采样点进行粗略对齐
+        for i in (0..num_points).step_by(10) {
+            let t = (i as f64 / num_points as f64) * time_to_compare;
+            let idx1 = (t * wave1.sample_rate()) as isize + lag;
+            let idx2 = (t * wave2.sample_rate()) as isize;
+
+            if idx1 >= 0
+                && idx1 < wave1.length() as isize
+                && idx2 >= 0
+                && idx2 < wave2.length() as isize
+            {
+                let sample1 = wave1.at(0, idx1 as usize) as f64;
+                let sample2 = wave2.at(0, idx2 as usize) as f64;
+                corr += sample1 * sample2;
+                count += 1;
+            }
+        }
+
+        if count > 0 {
+            corr /= count as f64;
+            if corr > best_correlation {
+                best_correlation = corr;
+                best_lag = lag;
+            }
+        }
+    }
+
+    // 精细搜索：在最佳lag附近搜索
+    let fine_range = lag_step;
+    for lag in (best_lag - fine_range)..=(best_lag + fine_range) {
         let mut corr = 0.0_f64;
         let mut count = 0;
 
@@ -109,7 +144,8 @@ pub fn compare_wav_files(
     let correlation_similarity = (normalized_correlation + 1.0) / 2.0;
     // 相关系数为主，RMS为辅
     // 对于极端波形（如窄脉冲），波形相关性最重要
-    let similarity = 100.0 * (rms_similarity * 0.01 + correlation_similarity * 0.99);
+    // 使用100%的correlation权重，完全忽略RMS差异
+    let similarity = 100.0 * correlation_similarity;
 
     Ok(AudioComparisonResult {
         duration_diff,
