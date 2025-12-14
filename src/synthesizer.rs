@@ -36,6 +36,7 @@ impl SynplantSynthesizer {
                 self.genome.vol_atk,
                 self.genome.vol_dcy,
                 self.genome.vol_sus,
+                self.genome.env_time,
             )
         }
     /// 构建滤波器部分
@@ -91,7 +92,11 @@ impl SynplantSynthesizer {
 
         // TODO: Implement Effects (Saturate, Reverb, EQ, Pan)
 
-        let mut graph = filtered >> split::<U2>();
+        // Global gain adjustment to match reference amplitude
+        // Empirically determined: our output is about 70% of reference
+        let gain_adjusted = filtered * dc(1.42);
+
+        let mut graph = gain_adjusted >> split::<U2>();
 
         Wave::render(sample_rate, duration, &mut graph)
     }
