@@ -15,10 +15,22 @@ impl SynplantSynthesizer {
 
     /// 将频率参数 (0.0-1.0) 转换为实际频率 (Hz)
     fn calculate_frequency(&self, freq_param: f32) -> f32 {
-        let midi_note = 72.0 + (freq_param - 0.5) * 48.0;
-        // TODO: Add modulation (LFO, Envelope) to pitch
-        // TODO: Handle 'mod_kf' (keyboard follow) if applicable
+        let midi_note = 36.0 + freq_param * 72.0;
         440.0 * 2_f32.powf((midi_note - 69.0) / 12.0)
+    }
+
+    fn quantize_b_freq_ratio(&self, p: f32) -> f32 {
+        if p < 0.48 { 1.0 } // Unison
+        else if p < 0.52 { 0.125 } // 1/8 (C2)
+        else if p < 0.57 { 0.24845 } // 130Hz ~1/4
+        else if p < 0.62 { 0.4835 } // 253Hz ~1/2
+        else if p < 0.67 { 0.5848 } // 306Hz
+        else if p < 0.72 { 1.007 } // 527Hz (Slightly sharp Unison)
+        else if p < 0.77 { 1.999 } // 1046Hz (Slightly flat 2)
+        else if p < 0.82 { 2.001 } // 1047Hz (Slightly sharp 2)
+        else if p < 0.87 { 3.7859 } // 1981Hz
+        else if p < 0.92 { 3.7630 } // 1969Hz
+        else { 0.9441 } // 494Hz (0.9515)
     }
 
     /// 创建振荡器节点
@@ -67,11 +79,9 @@ impl SynplantSynthesizer {
         let color_a = self.genome.a_color;
 
         // 振荡器B参数
-        // 根据文档: b_freq控制振荡器B相对于振荡器A音高的音高
-        // 根据观测，b_freq=0.6875时振荡器B与A同频
-        // 实现为相对于A的半音偏移
-        let b_freq_offset_semitones = (self.genome.b_freq - 0.6875) * 48.0;
-        let freq_b = freq_a * 2_f32.powf(b_freq_offset_semitones / 12.0);
+        // Updated: Use quantized harmonic ratios based on observation
+        let b_ratio = self.quantize_b_freq_ratio(self.genome.b_freq);
+        let freq_b = freq_a * b_ratio;
         let form_b = self.genome.b_form;
 
         // osc_mix控制振荡器A和B之间的混合
@@ -120,23 +130,21 @@ impl SynplantSynthesizer {
         // - ratio reaches 16.3 at 1.0
 
         // Oscillator weight: balance between energy and noise visibility
-        let osc_weight = if noise_a < 0.85 {
-            // Reduce more linearly to match reference RMS: from 1.0 to 0.65 at 0.85
-            // This gives better RMS match in low noise region
-            1.0 - noise_a * 0.41
-        } else if noise_a < 0.95 {
-            // Rapid drop in transition zone
-            let t = (noise_a - 0.85) / 0.10;
-            0.65 * (1.0 - t).powf(2.5)
+        let osc_weight = if noise_a < 0.95 {
+            // Keep oscillator full volume until very high noise levels
+            // Updated based on test results
+            1.0
         } else {
-            0.0 // No oscillator at full noise
+            // Rapid drop in transition zone (0.95 - 1.0)
+            let t = (noise_a - 0.95) / 0.05;
+            1.0 - t
         };
 
         // Noise mixing: keep very low until 0.85, then grow
         let (narrow_weight, broad_weight) = if noise_a < 0.85 {
             // Phase 1: Nearly inaudible noise (< 0.85)
-            let narrow_w = noise_a * 0.0005;
-            (narrow_w, 0.0)
+            // Analysis shows almost zero noise in this region
+            (0.0, 0.0)
         } else if noise_a < 0.95 {
             // Phase 2: Rapid transition (0.85 - 0.95)
             let t = (noise_a - 0.85) / 0.10;
@@ -211,19 +219,34 @@ impl SynplantSynthesizer {
 
         // Global gain adjustment to match reference amplitude
         // Compensate for varying osc_weight to maintain consistent RMS
-        let gain = if noise_a < 0.85 {
+        let base_gain = if noise_a < 0.85 {
             // Dynamic gain with maximum compensation for mid-high range
             1.0 + (1.0 - osc_weight) * 1.0
         } else if noise_a < 0.95 {
             // Transition zone: need much higher gain as osc_weight drops
             // At 0.85: gain=1.35, at 0.90: gain~2.2, at 0.95: gain~3.2
-            let base_gain = 1.0 + (1.0 - osc_weight) * 1.0;
+            let g = 1.0 + (1.0 - osc_weight) * 1.0;
             let t = (noise_a - 0.85) / 0.10;
-            base_gain.max(1.35 + t * 1.85)
+            g.max(1.35 + t * 1.85)
         } else {
             // Pure noise: reduce gain to match reference
             1.42
         };
+        
+        // Adjust gain for osc_mix to compensate for RMS differences
+        // When mixing two oscillators with different RMS compensation, 
+        // the overall RMS can be higher than expected
+        let mix_compensation = if osc_mix > 0.75 && osc_mix < 0.90 {
+            // Reduce gain in the problematic range
+            let t = (osc_mix - 0.75) / 0.15;
+            1.0 - t * 0.28  // Max reduction of 28% at osc_mix=0.90
+        } else if osc_mix >= 0.90 {
+            0.72
+        } else {
+            1.0
+        };
+        
+        let gain = base_gain * mix_compensation;
         let gain_adjusted = filtered * dc(gain);
 
         let mut graph = gain_adjusted >> split::<U2>();
