@@ -225,15 +225,11 @@ impl SynplantSynthesizer {
         let (narrow_weight, broad_weight) = if noise_a < 0.8 {
             (0.0, 0.0)
         } else {
-            // Linear rise from 0.0 to 0.11 between 0.8 and 1.0
+            // Linear rise from 0.0 to 0.118 between 0.8 and 1.0
             let t = (noise_a - 0.8) / 0.2;
-            // Add a little narrow noise in the transition for texture
-            let narrow = if noise_a < 0.9 {
-                t * 0.05
-            } else {
-                (1.0 - t) * 0.05
-            };
-            (narrow, t * 0.09)
+            // When a_noise=1.0, we want noise with RMS ~0.045
+            // ColoredNoise generates RMS ~0.38, so we scale by ~0.118
+            (0.0, t * 0.118)
         };
 
         let osc_a = osc_pure_a * dc(osc_weight)
