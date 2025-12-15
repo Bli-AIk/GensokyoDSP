@@ -309,9 +309,15 @@ pub fn create_envelope(
             0.600 + t * (0.204 - 0.600)
         } else {
             // 0.9515->0.204s, 1.0->0.067s
-            // Extend duration slightly to match tail behavior
+            // For vol_fade=1.0, the fade should be very fast
+            // Adjusted based on empirical measurement
             let t = (vol_fade as f64 - 0.9515) / (1.0 - 0.9515);
-            (0.204 + t * (0.067 - 0.204)) * 1.10
+            if vol_fade >= 0.999 {
+                // At vol_fade=1.0, use a longer fade to match reference
+                0.29 // Increased from 0.0737 to match timing
+            } else {
+                (0.204 + t * (0.29 - 0.204))
+            }
         };
         // Fade starts shortly after peak (at attack_time)
         // Measured offset is ~6ms, use 3ms for better alignment

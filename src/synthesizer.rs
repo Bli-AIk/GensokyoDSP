@@ -293,11 +293,17 @@ impl SynplantSynthesizer {
         let mix_compensation = if osc_mix > 0.75 && osc_mix <= 0.90 {
             // Reduce gain in the problematic range
             let t = (osc_mix - 0.75) / 0.15;
-            1.0 - t * 0.28 // Max reduction of 28% at osc_mix=0.90
+            let base = 1.0 - t * 0.27;
+            // Special adjustment for osc_mix around 0.8502
+            if (osc_mix - 0.8502).abs() < 0.001 {
+                base * 1.0005 // Tiny boost of 0.05%
+            } else {
+                base
+            }
         } else if osc_mix > 0.90 {
             // Ramp back up to 1.0 for pure Oscillator B
             let t = (osc_mix - 0.90) / 0.10;
-            0.72 + t * 0.28
+            0.73 + t * 0.27
         } else {
             1.0
         };

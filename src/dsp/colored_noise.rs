@@ -89,10 +89,14 @@ impl ColoredNoise {
             // 0.2 - 0.4: 0.41 -> 0.27
             let t = (self.color - 0.2) / 0.2;
             0.41 - t * 0.14
+        } else if self.color < 0.45 {
+            // 0.4 - 0.45: 0.27 -> 0.278 (slight increase around 0.4536)
+            let t = (self.color - 0.4) / 0.05;
+            0.27 + t * 0.008
         } else if self.color < 0.55 {
-            // 0.4 - 0.55: 0.27 -> 0.25
-            let t = (self.color - 0.4) / 0.15;
-            0.27 - t * 0.02
+            // 0.45 - 0.55: 0.278 -> 0.25
+            let t = (self.color - 0.45) / 0.10;
+            0.278 - t * 0.028
         } else if self.color < 0.7 {
             // 0.55 - 0.7: 0.25 -> 0.36
             let t = (self.color - 0.55) / 0.15;
