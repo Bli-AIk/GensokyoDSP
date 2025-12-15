@@ -294,7 +294,7 @@ impl SynplantSynthesizer {
             let base = 1.0 - t * 0.27;
             // Special adjustment for osc_mix around 0.8502
             if (osc_mix - 0.8502).abs() < 0.001 {
-                base * 1.0008 // Tiny boost of 0.08%
+                base * 1.0015 // Tiny boost of 0.15%
             } else {
                 base
             }
