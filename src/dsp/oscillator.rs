@@ -19,7 +19,7 @@ impl MorphOscillator {
     }
 
     fn tick_sample(&mut self, freq: f32, form: f32) -> f32 {
-        let output = Self::morph_waveform(self.phase, form as f64);
+        let output = Self::morph_waveform(self.phase, form as f64, freq as f64, self.sample_rate);
 
         // 更新相位
         self.phase += freq as f64 / self.sample_rate;
@@ -31,12 +31,12 @@ impl MorphOscillator {
     }
 
     /// 生成带限锯齿波
-    fn generate_saw(phase: f64, rolloff_strength: f64) -> f64 {
-        Self::generate_saw_custom(phase, 64, rolloff_strength)
+    fn generate_saw(phase: f64, rolloff_strength: f64, freq: f64, sample_rate: f64) -> f64 {
+        Self::generate_saw_custom(phase, 64, rolloff_strength, freq, sample_rate)
     }
 
     /// 生成单个采样点的波形值
-    fn morph_waveform(phase: f64, form: f64) -> f64 {
+    fn morph_waveform(phase: f64, form: f64, freq: f64, sample_rate: f64) -> f64 {
         let form = form.clamp(0.0, 1.0);
         let p = phase;
 
@@ -45,7 +45,7 @@ impl MorphOscillator {
             let t = form / 0.57;
 
             let sine = (p * 2.0 * PI).sin();
-            let saw = Self::generate_saw(p, 20.0);
+            let saw = Self::generate_saw(p, 20.0, freq, sample_rate);
 
             let blend = t.powf(1.8);
             sine * (1.0 - blend) + saw * blend
@@ -75,8 +75,8 @@ impl MorphOscillator {
                 20.0
             };
 
-            let saw_p = Self::generate_saw(p, rolloff_strength);
-            let saw_shifted = Self::generate_saw(p - 0.5, rolloff_strength);
+            let saw_p = Self::generate_saw(p, rolloff_strength, freq, sample_rate);
+            let saw_shifted = Self::generate_saw(p - 0.5, rolloff_strength, freq, sample_rate);
 
             // Phase 2: Saw (O+E) -> Square (O)
             // Target = Odd + ratio * Even
@@ -133,9 +133,20 @@ impl MorphOscillator {
                 64
             };
 
-            let saw_base = Self::generate_saw_custom(p - 0.5, max_harmonics, rolloff_strength);
-            let saw_mod =
-                Self::generate_saw_custom(p - 0.5 - duty_cycle, max_harmonics, rolloff_strength);
+            let saw_base = Self::generate_saw_custom(
+                p - 0.5,
+                max_harmonics,
+                rolloff_strength,
+                freq,
+                sample_rate,
+            );
+            let saw_mod = Self::generate_saw_custom(
+                p - 0.5 - duty_cycle,
+                max_harmonics,
+                rolloff_strength,
+                freq,
+                sample_rate,
+            );
 
             0.5 * (saw_mod - saw_base)
         }
@@ -143,9 +154,19 @@ impl MorphOscillator {
 
     // Removed unused generate_pwm_from_saw helper
 
-    fn generate_saw_custom(phase: f64, max_harmonics: i32, rolloff_strength: f64) -> f64 {
+    fn generate_saw_custom(
+        phase: f64,
+        max_harmonics: i32,
+        rolloff_strength: f64,
+        freq: f64,
+        sample_rate: f64,
+    ) -> f64 {
         let mut saw = 0.0;
-        for n in 1..=max_harmonics {
+        let nyquist = sample_rate / 2.0;
+        let safe_max_n = (nyquist / freq).floor() as i32;
+        let actual_max_harmonics = std::cmp::min(max_harmonics, safe_max_n);
+
+        for n in 1..=actual_max_harmonics {
             let n_f = n as f64;
             let amp = (-1.0_f64).powi(n + 1) / n_f;
             let rolloff = 1.0 / (1.0 + (n_f / rolloff_strength).powi(2));

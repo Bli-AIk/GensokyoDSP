@@ -58,6 +58,18 @@ for idx, (val, color) in enumerate(zip(vals, colors)):
         plt.grid(True, alpha=0.3)
         plt.legend()
         plt.ylim([-80, 0])
+        
+        # Calculate and print stats
+        print(f"--- a_noise={val} ---")
+        print(f"Ref RMS: {ref_rms:.6f}, Gen RMS: {gen_rms:.6f}, Diff: {gen_rms - ref_rms:.6f}")
+        
+        # Calculate average magnitude difference in dB
+        min_len = min(len(ref_mag), len(gen_mag))
+        ref_db = 20*np.log10(ref_mag[:min_len] + 1e-10)
+        gen_db = 20*np.log10(gen_mag[:min_len] + 1e-10)
+        avg_db_diff = np.mean(np.abs(ref_db - gen_db))
+        print(f"Avg Spectrum Diff (dB): {avg_db_diff:.2f}")
+
     except Exception as e:
         print(f"Error processing {val}: {e}")
 

@@ -170,40 +170,27 @@ impl SynplantSynthesizer {
         // - ratio reaches 16.3 at 1.0
 
         // Oscillator weight: balance between energy and noise visibility
-        let osc_weight = if noise_a < 0.95 {
-            // Keep oscillator full volume until very high noise levels
-            // Updated based on test results
+        let osc_weight = if noise_a < 0.8 {
             1.0
         } else {
-            // Rapid drop in transition zone (0.95 - 1.0)
-            let t = (noise_a - 0.95) / 0.05;
+            // Linear drop from 1.0 to 0.0 between 0.8 and 1.0
+            let t = (noise_a - 0.8) / 0.2;
             1.0 - t
         };
 
-        // Noise mixing: keep very low until 0.85, then grow
-        let (narrow_weight, broad_weight) = if noise_a < 0.85 {
-            // Phase 1: Nearly inaudible noise (< 0.85)
-            // Analysis shows almost zero noise in this region
+        // Noise mixing
+        let (narrow_weight, broad_weight) = if noise_a < 0.8 {
             (0.0, 0.0)
-        } else if noise_a < 0.95 {
-            // Phase 2: Rapid transition (0.85 - 0.95)
-            let t = (noise_a - 0.85) / 0.10;
-
-            // Narrow fades out
-            let narrow_w = 0.0005 * 0.85 * (1.0 - t).powf(2.0);
-
-            // Broad grows: need to match target noise/fund ratios
-            // At 0.85: aim for 0.014, try 0.015
-            // At 0.95: need ~0.11 for strong noise
-            let broad_w = 0.015 + t.powf(1.8) * 0.095;
-            (narrow_w, broad_w)
         } else {
-            // Phase 3: Full noise (0.95 - 1.0)
-            // Slightly reduce from 0.08 to balance RMS
-            // At 0.95: 0.08, at 1.0: 0.075
-            let t = (noise_a - 0.95) / 0.05;
-            let broad_w = 0.08 - t * 0.005;
-            (0.0, broad_w)
+            // Linear rise from 0.0 to 0.11 between 0.8 and 1.0
+            let t = (noise_a - 0.8) / 0.2;
+            // Add a little narrow noise in the transition for texture
+            let narrow = if noise_a < 0.9 {
+                t * 0.05
+            } else {
+                (1.0 - t) * 0.05
+            };
+            (narrow, t * 0.11)
         };
 
         let osc_a = osc_pure_a * dc(osc_weight)
@@ -232,14 +219,14 @@ impl SynplantSynthesizer {
         // Using equal-power crossfading for smooth transition
         // Map osc_mix to angle [0, pi/2]:
         // - osc_mix=0 -> angle=0 -> cos=1, sin=0 (only A)
-        // - osc_mix=0.79 -> angle=pi/4 -> cos=sin=0.707 (50/50)
+        // - osc_mix=0.80 -> angle=pi/4 -> cos=sin=0.707 (50/50)
         // - osc_mix=1 -> angle=pi/2 -> cos=0, sin=1 (only B)
 
-        let angle = if osc_mix <= 0.79 {
-            (osc_mix / 0.79) * std::f32::consts::FRAC_PI_4
+        let angle = if osc_mix <= 0.80 {
+            (osc_mix / 0.80) * std::f32::consts::FRAC_PI_4
         } else {
             std::f32::consts::FRAC_PI_4
-                + ((osc_mix - 0.79) / (1.0 - 0.79)) * std::f32::consts::FRAC_PI_4
+                + ((osc_mix - 0.80) / (1.0 - 0.80)) * std::f32::consts::FRAC_PI_4
         };
 
         let weight_a = angle.cos();
@@ -258,20 +245,7 @@ impl SynplantSynthesizer {
         // TODO: Implement Effects (Saturate, Reverb, EQ, Pan)
 
         // Global gain adjustment to match reference amplitude
-        // Compensate for varying osc_weight to maintain consistent RMS
-        let base_gain = if noise_a < 0.85 {
-            // Dynamic gain with maximum compensation for mid-high range
-            1.0 + (1.0 - osc_weight) * 1.0
-        } else if noise_a < 0.95 {
-            // Transition zone: need much higher gain as osc_weight drops
-            // At 0.85: gain=1.35, at 0.90: gain~2.2, at 0.95: gain~3.2
-            let g = 1.0 + (1.0 - osc_weight) * 1.0;
-            let t = (noise_a - 0.85) / 0.10;
-            g.max(1.35 + t * 1.85)
-        } else {
-            // Pure noise: reduce gain to match reference
-            1.42
-        };
+        let base_gain = 1.0;
 
         // Adjust gain for osc_mix to compensate for RMS differences
         // When mixing two oscillators with different RMS compensation,
