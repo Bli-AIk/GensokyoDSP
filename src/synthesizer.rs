@@ -15,8 +15,50 @@ impl SynplantSynthesizer {
 
     /// 将频率参数 (0.0-1.0) 转换为实际频率 (Hz)
     fn calculate_frequency(&self, freq_param: f32) -> f32 {
-        let midi_note = 36.0 + freq_param * 72.0;
-        440.0 * 2_f32.powf((midi_note - 69.0) / 12.0)
+        // Measured data points from a_freq tests
+        let freq_map = [
+            (0.0000, 65.4064), // Extrapolated C2
+            (0.0547, 82.1280),
+            (0.1058, 101.5727),
+            (0.1496, 121.8595),
+            (0.2007, 150.7198),
+            (0.2518, 186.4000),
+            (0.3102, 237.6415),
+            (0.3540, 285.1186),
+            (0.4051, 352.6238),
+            (0.4536, 431.3926),
+            (0.4958, 514.1483),
+            (0.5000, 523.2511), // Explicitly measured from b_freq tests
+            (0.5506, 645.8984),
+            (0.6055, 811.4024),
+            (0.6519, 984.1547),
+            (0.7025, 1214.8341),
+            (0.7489, 1473.4959),
+            (0.8080, 1883.8349),
+            (0.8502, 2245.1954),
+            (0.9051, 2820.5016),
+            (0.9515, 3421.0475),
+            (1.0000, 4186.0025),
+        ];
+
+        // Linear interpolation
+        if freq_param <= freq_map[0].0 {
+            return freq_map[0].1;
+        }
+        if freq_param >= freq_map[freq_map.len() - 1].0 {
+            return freq_map[freq_map.len() - 1].1;
+        }
+
+        for i in 0..freq_map.len() - 1 {
+            let (p1, f1) = freq_map[i];
+            let (p2, f2) = freq_map[i + 1];
+            if freq_param >= p1 && freq_param <= p2 {
+                let t = (freq_param - p1) / (p2 - p1);
+                return f1 + t * (f2 - f1);
+            }
+        }
+
+        freq_map[0].1 // Should not reach here
     }
 
     fn quantize_b_freq_ratio(&self, p: f32) -> f32 {
@@ -25,19 +67,19 @@ impl SynplantSynthesizer {
         }
         // Unison
         else if p < 0.52 {
-            0.125
+            0.12497
         }
         // 1/8 (C2)
         else if p < 0.57 {
-            0.2494
+            0.24939
         }
         // 130Hz
         else if p < 0.62 {
-            0.4838
+            0.48381
         }
         // 253Hz
         else if p < 0.67 {
-            0.5889
+            0.58891
         }
         // 308Hz
         else if p < 0.69 {
@@ -45,7 +87,7 @@ impl SynplantSynthesizer {
         }
         // 523Hz (Unison) - used in b_form tests
         else if p < 0.72 {
-            1.0090
+            1.00901
         }
         // 528Hz
         else if p < 0.77 {
@@ -57,15 +99,15 @@ impl SynplantSynthesizer {
         }
         // 2093Hz
         else if p < 0.87 {
-            7.175
+            7.17497
         }
         // 3754Hz
         else if p < 0.92 {
-            10.644
+            10.64416
         }
         // 5569Hz
         else if p < 0.97 {
-            16.1
+            16.09951
         }
         // 8424Hz
         else {
@@ -84,13 +126,14 @@ impl SynplantSynthesizer {
     }
 
     /// 创建默认的音量包络节点
-    fn create_envelope_node(&self) -> An<impl AudioNode<Inputs = U0, Outputs = U1>> {
+    fn create_envelope_node(&self, freq: f32) -> An<impl AudioNode<Inputs = U0, Outputs = U1>> {
         crate::dsp::envelope::create_envelope(
             self.genome.vol_atk,
             self.genome.vol_dcy,
             self.genome.vol_sus,
             self.genome.env_time,
             self.genome.vol_fade,
+            freq,
         )
     }
     /// 构建滤波器部分
@@ -190,7 +233,7 @@ impl SynplantSynthesizer {
             } else {
                 (1.0 - t) * 0.05
             };
-            (narrow, t * 0.11)
+            (narrow, t * 0.09)
         };
 
         let osc_a = osc_pure_a * dc(osc_weight)
@@ -235,7 +278,8 @@ impl SynplantSynthesizer {
         let mixed_osc = osc_a * dc(weight_a) + osc_b * dc(weight_b);
 
         // Stage 2: Envelope
-        let volume_env = self.create_envelope_node();
+        // Pass fundamental frequency for key tracking / empirical corrections
+        let volume_env = self.create_envelope_node(freq_a);
         let with_envelope = mixed_osc * volume_env;
 
         // Stage 3: Filter
@@ -293,7 +337,7 @@ impl SynplantSynthesizer {
         let osc_a = source * compensation;
 
         // Use the same envelope logic as main synthesis
-        let volume_env = self.create_envelope_node();
+        let volume_env = self.create_envelope_node(freq);
         let with_envelope = osc_a * volume_env;
 
         // Use the same filter logic

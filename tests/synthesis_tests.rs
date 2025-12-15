@@ -671,7 +671,7 @@ impl ANoiseTestCase {
         println!("\n测试 '{}' 结果:", self.name);
         result.print_report();
 
-        const SIMILARITY_THRESHOLD: f64 = 95.0; // 噪声测试使用90%阈值
+        const SIMILARITY_THRESHOLD: f64 = 95.0;
         if !result.is_similar(SIMILARITY_THRESHOLD) {
             return Err(format!(
                 "相似度 {:.2}% 低于阈值 {:.2}%",
@@ -934,7 +934,7 @@ impl AColorTestCase {
         println!("\n测试 '{}' 结果:", self.name);
         result.print_report();
 
-        const SIMILARITY_THRESHOLD: f64 = 70.0; // 噪声测试使用70%阈值
+        const SIMILARITY_THRESHOLD: f64 = 95.0;
         if !result.is_similar(SIMILARITY_THRESHOLD) {
             return Err(format!(
                 "相似度 {:.2}% 低于阈值 {:.2}%",

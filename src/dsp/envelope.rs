@@ -6,16 +6,18 @@ pub fn create_envelope(
     vol_sus: f32,
     env_time: f32,
     vol_fade: f32,
+    freq: f32,
 ) -> An<impl AudioNode<Inputs = U0, Outputs = U1>> {
     // Attack time mapping based on vol_atk
     // Empirically measured from reference files:
     // The curve is highly non-monotonic with multiple peaks and valleys
-    let attack_time = if vol_atk < 0.001 {
-        0.20 // vol_atk=0.0
+    let mut attack_time = if vol_atk < 0.001 {
+        0.014 // vol_atk=0.0 - Fast attack observed in a_freq tests (low freq)
     } else if vol_atk <= 0.0547 {
-        // 0.0->0.20, 0.0547->0.08
+        // ... (rest of mapping)
+        // 0.0->0.014, 0.0547->0.08
         let t = (vol_atk as f64) / 0.0547;
-        0.20 + t * (0.08 - 0.20)
+        0.014 + t * (0.08 - 0.014)
     } else if vol_atk <= 0.1058 {
         // Linear interpolation: 0.0547->0.08, 0.1058->0.29
         let t = (vol_atk as f64 - 0.0547) / (0.1058 - 0.0547);
@@ -78,6 +80,81 @@ pub fn create_envelope(
         0.22 + t * (0.10 - 0.22)
     };
 
+    // Empirical frequency-dependent attack scaling
+    // Observed:
+    // Freq < 1500Hz: No scaling
+    // Freq 2200Hz: +0.5s
+    // Freq 2800Hz: +2.1s (Peak)
+    // Freq 3400Hz: +0.1s
+    // Freq > 4000Hz: No scaling
+    if vol_atk < 0.001 {
+        // Only apply if vol_atk is near 0, as observed
+        if freq > 1500.0 && freq < 4000.0 {
+            // Gaussian-like bump centered at 2800Hz
+            let center = 2820.0;
+            let width = 400.0;
+            let dist = (freq as f64 - center).abs();
+            let scale = (-0.5 * (dist / width).powi(2)).exp();
+
+            // Peak add is 2.15s
+            attack_time += scale * 2.15;
+        }
+
+        // vol_sus also affects attack time when vol_atk is near 0
+        // Empirically measured from vol_sus tests:
+        // vol_sus=0.0547 -> peak at 0.096s
+        // vol_sus=0.1058 -> peak at 0.317s
+        // vol_sus=0.1496 -> peak at 0.489s (peak)
+        // vol_sus=0.2007 -> peak at 0.381s (descending)
+        // vol_sus=0.2518 -> peak at 0.265s
+        // vol_sus=0.3102 -> peak at 0.155s
+        // vol_sus=0.3540 -> peak at 0.039s
+        // vol_sus=0.4051 -> peak at 0.012s
+        // vol_sus=0.4958 -> peak at 0.008s
+        let sus_attack_adjustment = if vol_sus <= 0.0547 {
+            // 0.0 -> 0.014, 0.0547 -> 0.096
+            let t = (vol_sus as f64) / 0.0547;
+            t * (0.096 - 0.014)
+        } else if vol_sus <= 0.1058 {
+            // 0.0547 -> 0.096, 0.1058 -> 0.317
+            let t = (vol_sus as f64 - 0.0547) / (0.1058 - 0.0547);
+            0.096 - 0.014 + t * (0.317 - 0.096)
+        } else if vol_sus <= 0.1496 {
+            // 0.1058 -> 0.317, 0.1496 -> 0.489 (peak)
+            let t = (vol_sus as f64 - 0.1058) / (0.1496 - 0.1058);
+            0.317 - 0.014 + t * (0.489 - 0.317)
+        } else if vol_sus <= 0.2007 {
+            // 0.1496 -> 0.489, 0.2007 -> 0.381 (descending)
+            let t = (vol_sus as f64 - 0.1496) / (0.2007 - 0.1496);
+            0.489 - 0.014 + t * (0.381 - 0.489)
+        } else if vol_sus <= 0.2518 {
+            // 0.2007 -> 0.381, 0.2518 -> 0.265
+            let t = (vol_sus as f64 - 0.2007) / (0.2518 - 0.2007);
+            0.381 - 0.014 + t * (0.265 - 0.381)
+        } else if vol_sus <= 0.3102 {
+            // 0.2518 -> 0.265, 0.3102 -> 0.148 (fine-tuned for 95% similarity)
+            let t = (vol_sus as f64 - 0.2518) / (0.3102 - 0.2518);
+            0.265 - 0.014 + t * (0.148 - 0.265)
+        } else if vol_sus <= 0.3540 {
+            // 0.3102 -> 0.148, 0.3540 -> 0.039
+            let t = (vol_sus as f64 - 0.3102) / (0.3540 - 0.3102);
+            0.148 - 0.014 + t * (0.039 - 0.148)
+        } else if vol_sus <= 0.4051 {
+            // 0.3540 -> 0.039, 0.4051 -> 0.012
+            let t = (vol_sus as f64 - 0.3540) / (0.4051 - 0.3540);
+            0.039 - 0.014 + t * (0.012 - 0.039)
+        } else if vol_sus <= 0.4958 {
+            // 0.4051 -> 0.012, 0.4958 -> 0.008
+            let t = (vol_sus as f64 - 0.4051) / (0.4958 - 0.4051);
+            0.012 - 0.014 + t * (0.008 - 0.012)
+        } else {
+            // For higher vol_sus, no additional adjustment
+            0.0
+        };
+
+        attack_time += sus_attack_adjustment;
+    }
+
     // Decay time influenced by vol_dcy and vol_sus
     // For vol_sus < 0.5: decay time to reach 10% is about 0.66s when vol_dcy=0.5
     let decay_time = if vol_sus < 0.5 {
@@ -93,8 +170,9 @@ pub fn create_envelope(
     // Decay curve shape
     // For no-sustain sounds, use exponential decay
     let decay_power = if vol_sus < 0.5 {
-        // Exponential decay - power of about 1.5-2.0
-        1.8
+        // Exponential decay - empirically fitted from reference audio
+        // Fitted values range from 3.29-3.33
+        3.3
     } else if vol_dcy < 0.001 {
         10.0
     } else {
@@ -171,7 +249,18 @@ pub fn create_envelope(
 
     // Attack curve power - empirically determined
     // Different vol_atk values produce different curve shapes
-    let attack_power = if vol_atk <= 0.06 {
+    let attack_power = if vol_atk < 0.001 && vol_sus < 0.5 {
+        // Special case: vol_atk=0 with low sustain uses very steep attack
+        // Fitted from reference: power ~7-10
+        // Use interpolation based on vol_sus to match the gradual change
+        if vol_sus <= 0.0547 {
+            7.13 // Fitted value for vol_sus=0.0547
+        } else {
+            // Transition to power=10 for higher vol_sus values
+            let t = ((vol_sus as f64) - 0.0547) / (0.3102 - 0.0547);
+            7.13 + t * (10.0 - 7.13)
+        }
+    } else if vol_atk <= 0.06 {
         0.93 // Nearly linear for very small values
     } else if vol_atk <= 0.35 {
         // Power increases with vol_atk, peaks around 3.0
@@ -232,6 +321,14 @@ pub fn create_envelope(
         (1000.0, 1.0) // No fade
     };
 
+    // Peak amplitude compensation based on vol_sus
+    // Empirically observed: when vol_sus < 0.5 (no sustain), the peak is boosted
+    // to compensate for energy loss from fast decay
+    // vol_atk tests (vol_sus=1.0): peak RMS ~0.065
+    // vol_sus tests (vol_sus<0.5): peak RMS ~0.090
+    // Ratio: 0.090 / 0.065 = 1.385, use 1.40 for better fit
+    let amplitude_boost = if vol_sus < 0.5 { 1.40 } else { 1.0 };
+
     envelope(move |t| {
         // Calculate base envelope value
         let base_envelope = if t < attack_time {
@@ -260,7 +357,7 @@ pub fn create_envelope(
         };
 
         // Apply fade if active
-        if fade_active && t >= fade_start_time {
+        let envelope_value = if fade_active && t >= fade_start_time {
             let fade_progress = (t - fade_start_time) / fade_duration;
             if fade_progress >= 1.0 {
                 0.0
@@ -272,6 +369,9 @@ pub fn create_envelope(
             }
         } else {
             base_envelope
-        }
+        };
+
+        // Apply amplitude boost
+        envelope_value * amplitude_boost
     })
 }

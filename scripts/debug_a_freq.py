@@ -74,8 +74,8 @@ def plot_comparison(ref_file, gen_file, output_image):
     print(f"Gen Peak Frequency: {gen_peak_freq:.2f} Hz")
 
 if __name__ == "__main__":
-    ref_path = "tests/fixtures/a_freq_tests/a_freq_0.0547.wav"
-    gen_path = "tests/output/test_a_freq_0.0547.wav"
+    ref_path = "tests/fixtures/a_noise_tests/a_noise_1.0.wav"
+    gen_path = "tests/output/test_a_noise_1.0.wav"
     
     if os.path.exists(ref_path) and os.path.exists(gen_path):
         plot_comparison(ref_path, gen_path, "a_freq_debug.png")

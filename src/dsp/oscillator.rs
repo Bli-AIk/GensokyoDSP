@@ -32,7 +32,7 @@ impl MorphOscillator {
 
     /// 生成带限锯齿波
     fn generate_saw(phase: f64, rolloff_strength: f64, freq: f64, sample_rate: f64) -> f64 {
-        Self::generate_saw_custom(phase, 64, rolloff_strength, freq, sample_rate)
+        Self::generate_saw_custom(phase, 512, rolloff_strength, freq, sample_rate)
     }
 
     /// 生成单个采样点的波形值
@@ -42,12 +42,16 @@ impl MorphOscillator {
 
         if form < 0.57 {
             // 阶段1: 正弦波 -> 锯齿波 (0.0 到 0.57)
-            let t = form / 0.57;
+            let t = (form as f64) / 0.57;
 
             let sine = (p * 2.0 * PI).sin();
-            let saw = Self::generate_saw(p, 20.0, freq, sample_rate);
 
-            let blend = t.powf(1.8);
+            // Use constant bandwidth for saw component to maintain brightness at low pitches
+            // Derived from b_form tests (523Hz) passing with rolloff=20 -> Cutoff ~ 10.5kHz
+            let saw_rolloff = 5000.0 / freq;
+            let saw = Self::generate_saw(p, saw_rolloff, freq, sample_rate);
+
+            let blend = t.powf(2.2);
             sine * (1.0 - blend) + saw * blend
         } else if form < 0.8 {
             // 阶段2: 锯齿波 -> 方波 (0.57 到 0.8)
