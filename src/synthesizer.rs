@@ -227,8 +227,6 @@ impl SynplantSynthesizer {
         } else {
             // Linear rise from 0.0 to 0.118 between 0.8 and 1.0
             let t = (noise_a - 0.8) / 0.2;
-            // When a_noise=1.0, we want noise with RMS ~0.045
-            // ColoredNoise generates RMS ~0.38, so we scale by ~0.118
             (0.0, t * 0.118)
         };
 
@@ -296,7 +294,7 @@ impl SynplantSynthesizer {
             let base = 1.0 - t * 0.27;
             // Special adjustment for osc_mix around 0.8502
             if (osc_mix - 0.8502).abs() < 0.001 {
-                base * 1.0005 // Tiny boost of 0.05%
+                base * 1.0008 // Tiny boost of 0.08%
             } else {
                 base
             }
