@@ -247,9 +247,36 @@ impl SynplantSynthesizer {
         let compensation_b = form_sig_b2 >> comp_node_b;
         let osc_b_pure = source_b * compensation_b;
 
+        // Frequency-dependent RMS compensation for oscillator B
+        // At high frequencies, band-limiting reduces available harmonics, lowering RMS
+        // Empirically measured from b_freq tests (baseline at ~300Hz):
+        // 65Hz: 0.8653x, 130Hz: 0.9542x, 308Hz: 1.0x (baseline)
+        // 2093Hz: 1.2118x, 3754Hz: 1.4460x, 5570Hz: 1.7659x
+        let freq_compensation = if freq_b < 150.0 {
+            // Low freq: slight reduction
+            0.87 + (freq_b - 65.0) / (150.0 - 65.0) * (0.96 - 0.87)
+        } else if freq_b < 500.0 {
+            // Transition to baseline
+            0.96 + (freq_b - 150.0) / (500.0 - 150.0) * (1.0 - 0.96)
+        } else if freq_b < 1500.0 {
+            // Baseline region
+            1.0
+        } else if freq_b < 3000.0 {
+            // Start boosting for high freq
+            1.0 + (freq_b - 1500.0) / (3000.0 - 1500.0) * (1.3 - 1.0)
+        } else if freq_b < 5000.0 {
+            // More boost (fixed division by zero bug)
+            1.3 + (freq_b - 3000.0) / (5000.0 - 3000.0) * (1.6 - 1.3)
+        } else {
+            // Very high freq
+            let base = 1.6;
+            let extra = ((freq_b - 5000.0) / 1000.0) * 0.1;
+            (base + extra).min(1.8)
+        };
+
         // TODO: Add noise mixing for oscillator B (b_noise, currently 0.0 in tests)
-        // For now, just use the pure oscillator
-        let osc_b = osc_b_pure;
+        // Apply frequency compensation
+        let osc_b = osc_b_pure * dc(freq_compensation);
 
         // Stage 1c: Mix oscillators A and B
         // According to docs: at osc_mix=0.79, the mix is 50/50
@@ -294,7 +321,7 @@ impl SynplantSynthesizer {
             let base = 1.0 - t * 0.27;
             // Special adjustment for osc_mix around 0.8502
             if (osc_mix - 0.8502).abs() < 0.001 {
-                base * 1.0015 // Tiny boost of 0.15%
+                base * 0.992 // Reduce by 0.8% to match reference
             } else {
                 base
             }

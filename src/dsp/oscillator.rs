@@ -170,10 +170,20 @@ impl MorphOscillator {
         let safe_max_n = (nyquist / freq).floor() as i32;
         let actual_max_harmonics = std::cmp::min(max_harmonics, safe_max_n);
 
+        // Adapt rolloff when harmonics are limited
+        // At high frequencies with few harmonics, use gentler rolloff to preserve energy
+        let adaptive_rolloff = if actual_max_harmonics < 15 {
+            // High freq: scale rolloff to utilize available harmonics better
+            // When safe_max_n is small, make rolloff proportional to it
+            rolloff_strength.min((actual_max_harmonics as f64) * 1.5)
+        } else {
+            rolloff_strength
+        };
+
         for n in 1..=actual_max_harmonics {
             let n_f = n as f64;
             let amp = (-1.0_f64).powi(n + 1) / n_f;
-            let rolloff = 1.0 / (1.0 + (n_f / rolloff_strength).powi(2));
+            let rolloff = 1.0 / (1.0 + (n_f / adaptive_rolloff).powi(2));
             saw += amp * (phase * 2.0 * PI * n_f).sin() * rolloff;
         }
         saw * (2.0 / PI)
