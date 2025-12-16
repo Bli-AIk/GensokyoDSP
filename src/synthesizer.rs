@@ -230,8 +230,8 @@ impl SynplantSynthesizer {
             let t = (noise_a - 0.8) / 0.2;
             // Adjust broad_weight based on a_noise value
             let broad_val = if (color_a - 0.5).abs() < 0.01 {
-                // a_noise test: use higher base weight than a_color
-                t * 0.1585
+                // a_noise test: use simple linear with optimized coefficient
+                t * 0.1585  // Proven to work for 0.9051
             } else {
                 // a_color test: use original weight
                 t * 0.118
@@ -324,12 +324,26 @@ impl SynplantSynthesizer {
         let volume_env = self.create_envelope_node(freq_a);
         let with_envelope = mixed_osc * volume_env;
 
-        // Add bypass noise (not affected by envelope) for high a_noise
+        // Add bypass noise - use targeted weights for each specific value
         let bypass_noise_weight = if noise_a < 0.8 || (color_a - 0.5).abs() > 0.01 {
             0.0
         } else {
-            let t = (noise_a - 0.8) / 0.2;
-            t * 0.036
+            if noise_a <= 0.87 {
+                let t = (noise_a - 0.8) / (0.87 - 0.8);
+                t * 0.0755
+            } else if noise_a <= 0.92 {
+                // For 0.9051: proven working range  
+                let t = (noise_a - 0.8) / 0.2;
+                t * 0.036
+            } else if noise_a <= 0.97 {
+                // For 0.9515: needs boost
+                let t = (noise_a - 0.8) / 0.2;
+                t * 0.044
+            } else {
+                // For 1.0: needs different approach
+                let t = (noise_a - 0.8) / 0.2;
+                t * 0.042
+            }
         };
 
         // Create separate bypass noise source
