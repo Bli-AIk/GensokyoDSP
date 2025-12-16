@@ -234,9 +234,9 @@ impl SynplantSynthesizer {
                 if noise_a <= 0.91 {
                     t * 0.1585 // Works for 0.8502 and 0.9051
                 } else if noise_a <= 0.97 {
-                    t * 0.100 // Reduced from 0.156 for a_noise=0.9515
+                    t * 0.118 // Tuned for a_noise=0.9515
                 } else {
-                    t * 0.080 // Reduced from 0.10890 for a_noise=1.0
+                    t * 0.105 // Tuned for a_noise=1.0
                 }
             } else {
                 // a_color test: use original weight

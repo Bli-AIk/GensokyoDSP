@@ -57,7 +57,7 @@ fn test_vol_atk_0_0547() {
         name: "vol_atk_0.0547",
         config_file: "vol_atk_0.0547.ron",
         reference_file: "vol_atk_0.0547.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.0547 failed");
@@ -69,7 +69,7 @@ fn test_vol_atk_0_1058() {
         name: "vol_atk_0.1058",
         config_file: "vol_atk_0.1058.ron",
         reference_file: "vol_atk_0.1058.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.1058 failed");
@@ -81,7 +81,7 @@ fn test_vol_atk_0_1496() {
         name: "vol_atk_0.1496",
         config_file: "vol_atk_0.1496.ron",
         reference_file: "vol_atk_0.1496.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.1496 failed");
@@ -93,7 +93,7 @@ fn test_vol_atk_0_2007() {
         name: "vol_atk_0.2007",
         config_file: "vol_atk_0.2007.ron",
         reference_file: "vol_atk_0.2007.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.2007 failed");
@@ -105,7 +105,7 @@ fn test_vol_atk_0_2518() {
         name: "vol_atk_0.2518",
         config_file: "vol_atk_0.2518.ron",
         reference_file: "vol_atk_0.2518.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.2518 failed");
@@ -117,7 +117,7 @@ fn test_vol_atk_0_3102() {
         name: "vol_atk_0.3102",
         config_file: "vol_atk_0.3102.ron",
         reference_file: "vol_atk_0.3102.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.3102 failed");
@@ -129,7 +129,7 @@ fn test_vol_atk_0_3540() {
         name: "vol_atk_0.3540",
         config_file: "vol_atk_0.3540.ron",
         reference_file: "vol_atk_0.3540.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.3540 failed");
@@ -141,7 +141,7 @@ fn test_vol_atk_0_4051() {
         name: "vol_atk_0.4051",
         config_file: "vol_atk_0.4051.ron",
         reference_file: "vol_atk_0.4051.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.4051 failed");
@@ -153,7 +153,7 @@ fn test_vol_atk_0_4536() {
         name: "vol_atk_0.4536",
         config_file: "vol_atk_0.4536.ron",
         reference_file: "vol_atk_0.4536.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.4536 failed");
@@ -165,7 +165,7 @@ fn test_vol_atk_0_4958() {
         name: "vol_atk_0.4958",
         config_file: "vol_atk_0.4958.ron",
         reference_file: "vol_atk_0.4958.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.4958 failed");
@@ -177,7 +177,7 @@ fn test_vol_atk_0_5506() {
         name: "vol_atk_0.5506",
         config_file: "vol_atk_0.5506.ron",
         reference_file: "vol_atk_0.5506.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.5506 failed");
@@ -189,7 +189,7 @@ fn test_vol_atk_0_6055() {
         name: "vol_atk_0.6055",
         config_file: "vol_atk_0.6055.ron",
         reference_file: "vol_atk_0.6055.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.6055 failed");
@@ -201,7 +201,7 @@ fn test_vol_atk_0_6519() {
         name: "vol_atk_0.6519",
         config_file: "vol_atk_0.6519.ron",
         reference_file: "vol_atk_0.6519.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.6519 failed");
@@ -213,7 +213,7 @@ fn test_vol_atk_0_7025() {
         name: "vol_atk_0.7025",
         config_file: "vol_atk_0.7025.ron",
         reference_file: "vol_atk_0.7025.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.7025 failed");
@@ -225,7 +225,7 @@ fn test_vol_atk_0_7489() {
         name: "vol_atk_0.7489",
         config_file: "vol_atk_0.7489.ron",
         reference_file: "vol_atk_0.7489.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.7489 failed");
@@ -237,7 +237,7 @@ fn test_vol_atk_0_8080() {
         name: "vol_atk_0.8080",
         config_file: "vol_atk_0.8080.ron",
         reference_file: "vol_atk_0.8080.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.8080 failed");
@@ -249,7 +249,7 @@ fn test_vol_atk_0_8502() {
         name: "vol_atk_0.8502",
         config_file: "vol_atk_0.8502.ron",
         reference_file: "vol_atk_0.8502.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.8502 failed");
@@ -261,7 +261,7 @@ fn test_vol_atk_0_9051() {
         name: "vol_atk_0.9051",
         config_file: "vol_atk_0.9051.ron",
         reference_file: "vol_atk_0.9051.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.9051 failed");
@@ -273,7 +273,7 @@ fn test_vol_atk_0_9515() {
         name: "vol_atk_0.9515",
         config_file: "vol_atk_0.9515.ron",
         reference_file: "vol_atk_0.9515.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_0.9515 failed");
@@ -285,7 +285,7 @@ fn test_vol_atk_1_0() {
         name: "vol_atk_1.0",
         config_file: "vol_atk_1.0.ron",
         reference_file: "vol_atk_1.0.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_atk_tests",
     };
     test.run().expect("test_vol_atk_1.0 failed");
@@ -297,7 +297,7 @@ fn test_vol_sus_0_0() {
         name: "vol_sus_0.0",
         config_file: "vol_sus_0.0.ron",
         reference_file: "vol_sus_0.0.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.0 failed");
@@ -309,7 +309,7 @@ fn test_vol_sus_0_0547() {
         name: "vol_sus_0.0547",
         config_file: "vol_sus_0.0547.ron",
         reference_file: "vol_sus_0.0547.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.0547 failed");
@@ -321,7 +321,7 @@ fn test_vol_sus_0_1058() {
         name: "vol_sus_0.1058",
         config_file: "vol_sus_0.1058.ron",
         reference_file: "vol_sus_0.1058.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.1058 failed");
@@ -333,7 +333,7 @@ fn test_vol_sus_0_1496() {
         name: "vol_sus_0.1496",
         config_file: "vol_sus_0.1496.ron",
         reference_file: "vol_sus_0.1496.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.1496 failed");
@@ -345,7 +345,7 @@ fn test_vol_sus_0_2007() {
         name: "vol_sus_0.2007",
         config_file: "vol_sus_0.2007.ron",
         reference_file: "vol_sus_0.2007.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.2007 failed");
@@ -357,7 +357,7 @@ fn test_vol_sus_0_2518() {
         name: "vol_sus_0.2518",
         config_file: "vol_sus_0.2518.ron",
         reference_file: "vol_sus_0.2518.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.2518 failed");
@@ -369,7 +369,7 @@ fn test_vol_sus_0_3102() {
         name: "vol_sus_0.3102",
         config_file: "vol_sus_0.3102.ron",
         reference_file: "vol_sus_0.3102.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.3102 failed");
@@ -381,7 +381,7 @@ fn test_vol_sus_0_3540() {
         name: "vol_sus_0.3540",
         config_file: "vol_sus_0.3540.ron",
         reference_file: "vol_sus_0.3540.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.3540 failed");
@@ -393,7 +393,7 @@ fn test_vol_sus_0_4051() {
         name: "vol_sus_0.4051",
         config_file: "vol_sus_0.4051.ron",
         reference_file: "vol_sus_0.4051.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.4051 failed");
@@ -405,7 +405,7 @@ fn test_vol_sus_0_4536() {
         name: "vol_sus_0.4536",
         config_file: "vol_sus_0.4536.ron",
         reference_file: "vol_sus_0.4536.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.4536 failed");
@@ -417,7 +417,7 @@ fn test_vol_sus_0_4958() {
         name: "vol_sus_0.4958",
         config_file: "vol_sus_0.4958.ron",
         reference_file: "vol_sus_0.4958.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.4958 failed");
@@ -429,7 +429,7 @@ fn test_vol_sus_0_5506() {
         name: "vol_sus_0.5506",
         config_file: "vol_sus_0.5506.ron",
         reference_file: "vol_sus_0.5506.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.5506 failed");
@@ -441,7 +441,7 @@ fn test_vol_sus_0_6055() {
         name: "vol_sus_0.6055",
         config_file: "vol_sus_0.6055.ron",
         reference_file: "vol_sus_0.6055.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.6055 failed");
@@ -453,7 +453,7 @@ fn test_vol_sus_0_6519() {
         name: "vol_sus_0.6519",
         config_file: "vol_sus_0.6519.ron",
         reference_file: "vol_sus_0.6519.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.6519 failed");
@@ -465,7 +465,7 @@ fn test_vol_sus_0_7025() {
         name: "vol_sus_0.7025",
         config_file: "vol_sus_0.7025.ron",
         reference_file: "vol_sus_0.7025.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.7025 failed");
@@ -477,7 +477,7 @@ fn test_vol_sus_0_7489() {
         name: "vol_sus_0.7489",
         config_file: "vol_sus_0.7489.ron",
         reference_file: "vol_sus_0.7489.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.7489 failed");
@@ -489,7 +489,7 @@ fn test_vol_sus_0_8080() {
         name: "vol_sus_0.8080",
         config_file: "vol_sus_0.8080.ron",
         reference_file: "vol_sus_0.8080.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.8080 failed");
@@ -501,7 +501,7 @@ fn test_vol_sus_0_8502() {
         name: "vol_sus_0.8502",
         config_file: "vol_sus_0.8502.ron",
         reference_file: "vol_sus_0.8502.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.8502 failed");
@@ -513,7 +513,7 @@ fn test_vol_sus_0_9051() {
         name: "vol_sus_0.9051",
         config_file: "vol_sus_0.9051.ron",
         reference_file: "vol_sus_0.9051.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.9051 failed");
@@ -525,7 +525,7 @@ fn test_vol_sus_0_9515() {
         name: "vol_sus_0.9515",
         config_file: "vol_sus_0.9515.ron",
         reference_file: "vol_sus_0.9515.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
         folder: "vol_sus_tests",
     };
     test.run().expect("test_vol_sus_0.9515 failed");

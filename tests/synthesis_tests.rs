@@ -690,7 +690,7 @@ fn test_a_noise_0_0547() {
         name: "a_noise_0.0547",
         config_file: "a_noise_0.0547.ron",
         reference_file: "a_noise_0.0547.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_noise=0.0547 测试失败");
 }
@@ -701,7 +701,7 @@ fn test_a_noise_0_1058() {
         name: "a_noise_0.1058",
         config_file: "a_noise_0.1058.ron",
         reference_file: "a_noise_0.1058.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_noise=0.1058 测试失败");
 }
@@ -712,7 +712,7 @@ fn test_a_noise_0_1496() {
         name: "a_noise_0.1496",
         config_file: "a_noise_0.1496.ron",
         reference_file: "a_noise_0.1496.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_noise=0.1496 测试失败");
 }
@@ -723,7 +723,7 @@ fn test_a_noise_0_2007() {
         name: "a_noise_0.2007",
         config_file: "a_noise_0.2007.ron",
         reference_file: "a_noise_0.2007.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_noise=0.2007 测试失败");
 }
@@ -734,7 +734,7 @@ fn test_a_noise_0_2518() {
         name: "a_noise_0.2518",
         config_file: "a_noise_0.2518.ron",
         reference_file: "a_noise_0.2518.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_noise=0.2518 测试失败");
 }
@@ -745,7 +745,7 @@ fn test_a_noise_0_3102() {
         name: "a_noise_0.3102",
         config_file: "a_noise_0.3102.ron",
         reference_file: "a_noise_0.3102.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_noise=0.3102 测试失败");
 }
@@ -756,7 +756,7 @@ fn test_a_noise_0_3540() {
         name: "a_noise_0.3540",
         config_file: "a_noise_0.3540.ron",
         reference_file: "a_noise_0.3540.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_noise=0.3540 测试失败");
 }
@@ -767,7 +767,7 @@ fn test_a_noise_0_4051() {
         name: "a_noise_0.4051",
         config_file: "a_noise_0.4051.ron",
         reference_file: "a_noise_0.4051.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_noise=0.4051 测试失败");
 }
@@ -778,7 +778,7 @@ fn test_a_noise_0_4536() {
         name: "a_noise_0.4536",
         config_file: "a_noise_0.4536.ron",
         reference_file: "a_noise_0.4536.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_noise=0.4536 测试失败");
 }
@@ -789,7 +789,7 @@ fn test_a_noise_0_4958() {
         name: "a_noise_0.4958",
         config_file: "a_noise_0.4958.ron",
         reference_file: "a_noise_0.4958.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_noise=0.4958 测试失败");
 }
@@ -800,7 +800,7 @@ fn test_a_noise_0_5506() {
         name: "a_noise_0.5506",
         config_file: "a_noise_0.5506.ron",
         reference_file: "a_noise_0.5506.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_noise=0.5506 测试失败");
 }
@@ -811,7 +811,7 @@ fn test_a_noise_0_6055() {
         name: "a_noise_0.6055",
         config_file: "a_noise_0.6055.ron",
         reference_file: "a_noise_0.6055.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_noise=0.6055 测试失败");
 }
@@ -822,7 +822,7 @@ fn test_a_noise_0_6519() {
         name: "a_noise_0.6519",
         config_file: "a_noise_0.6519.ron",
         reference_file: "a_noise_0.6519.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_noise=0.6519 测试失败");
 }
@@ -833,7 +833,7 @@ fn test_a_noise_0_7025() {
         name: "a_noise_0.7025",
         config_file: "a_noise_0.7025.ron",
         reference_file: "a_noise_0.7025.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_noise=0.7025 测试失败");
 }
@@ -844,7 +844,7 @@ fn test_a_noise_0_7489() {
         name: "a_noise_0.7489",
         config_file: "a_noise_0.7489.ron",
         reference_file: "a_noise_0.7489.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_noise=0.7489 测试失败");
 }
@@ -855,7 +855,7 @@ fn test_a_noise_0_8080() {
         name: "a_noise_0.8080",
         config_file: "a_noise_0.8080.ron",
         reference_file: "a_noise_0.8080.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_noise=0.8080 测试失败");
 }
@@ -866,7 +866,7 @@ fn test_a_noise_0_8502() {
         name: "a_noise_0.8502",
         config_file: "a_noise_0.8502.ron",
         reference_file: "a_noise_0.8502.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_noise=0.8502 测试失败");
 }
@@ -877,7 +877,7 @@ fn test_a_noise_0_9051() {
         name: "a_noise_0.9051",
         config_file: "a_noise_0.9051.ron",
         reference_file: "a_noise_0.9051.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_noise=0.9051 测试失败");
 }
@@ -888,7 +888,7 @@ fn test_a_noise_0_9515() {
         name: "a_noise_0.9515",
         config_file: "a_noise_0.9515.ron",
         reference_file: "a_noise_0.9515.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_noise=0.9515 测试失败");
 }
@@ -899,7 +899,7 @@ fn test_a_noise_1_0() {
         name: "a_noise_1.0",
         config_file: "a_noise_1.0.ron",
         reference_file: "a_noise_1.0.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_noise=1.0 测试失败");
 }
@@ -953,7 +953,7 @@ fn test_a_color_0_0() {
         name: "a_color_0.0",
         config_file: "a_color_0.0.ron",
         reference_file: "a_color_0.0.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_color=0.0 测试失败");
 }
@@ -964,7 +964,7 @@ fn test_a_color_0_0547() {
         name: "a_color_0.0547",
         config_file: "a_color_0.0547.ron",
         reference_file: "a_color_0.0547.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_color=0.0547 测试失败");
 }
@@ -975,7 +975,7 @@ fn test_a_color_0_1058() {
         name: "a_color_0.1058",
         config_file: "a_color_0.1058.ron",
         reference_file: "a_color_0.1058.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_color=0.1058 测试失败");
 }
@@ -986,7 +986,7 @@ fn test_a_color_0_1496() {
         name: "a_color_0.1496",
         config_file: "a_color_0.1496.ron",
         reference_file: "a_color_0.1496.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_color=0.1496 测试失败");
 }
@@ -997,7 +997,7 @@ fn test_a_color_0_2007() {
         name: "a_color_0.2007",
         config_file: "a_color_0.2007.ron",
         reference_file: "a_color_0.2007.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_color=0.2007 测试失败");
 }
@@ -1008,7 +1008,7 @@ fn test_a_color_0_2518() {
         name: "a_color_0.2518",
         config_file: "a_color_0.2518.ron",
         reference_file: "a_color_0.2518.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_color=0.2518 测试失败");
 }
@@ -1019,7 +1019,7 @@ fn test_a_color_0_3102() {
         name: "a_color_0.3102",
         config_file: "a_color_0.3102.ron",
         reference_file: "a_color_0.3102.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_color=0.3102 测试失败");
 }
@@ -1030,7 +1030,7 @@ fn test_a_color_0_3540() {
         name: "a_color_0.3540",
         config_file: "a_color_0.3540.ron",
         reference_file: "a_color_0.3540.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_color=0.3540 测试失败");
 }
@@ -1041,7 +1041,7 @@ fn test_a_color_0_4051() {
         name: "a_color_0.4051",
         config_file: "a_color_0.4051.ron",
         reference_file: "a_color_0.4051.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_color=0.4051 测试失败");
 }
@@ -1052,7 +1052,7 @@ fn test_a_color_0_4536() {
         name: "a_color_0.4536",
         config_file: "a_color_0.4536.ron",
         reference_file: "a_color_0.4536.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_color=0.4536 测试失败");
 }
@@ -1063,7 +1063,7 @@ fn test_a_color_0_5506() {
         name: "a_color_0.5506",
         config_file: "a_color_0.5506.ron",
         reference_file: "a_color_0.5506.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_color=0.5506 测试失败");
 }
@@ -1074,7 +1074,7 @@ fn test_a_color_0_6055() {
         name: "a_color_0.6055",
         config_file: "a_color_0.6055.ron",
         reference_file: "a_color_0.6055.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_color=0.6055 测试失败");
 }
@@ -1085,7 +1085,7 @@ fn test_a_color_0_6519() {
         name: "a_color_0.6519",
         config_file: "a_color_0.6519.ron",
         reference_file: "a_color_0.6519.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_color=0.6519 测试失败");
 }
@@ -1096,7 +1096,7 @@ fn test_a_color_0_7025() {
         name: "a_color_0.7025",
         config_file: "a_color_0.7025.ron",
         reference_file: "a_color_0.7025.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_color=0.7025 测试失败");
 }
@@ -1107,7 +1107,7 @@ fn test_a_color_0_7489() {
         name: "a_color_0.7489",
         config_file: "a_color_0.7489.ron",
         reference_file: "a_color_0.7489.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_color=0.7489 测试失败");
 }
@@ -1118,7 +1118,7 @@ fn test_a_color_0_8080() {
         name: "a_color_0.8080",
         config_file: "a_color_0.8080.ron",
         reference_file: "a_color_0.8080.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_color=0.8080 测试失败");
 }
@@ -1129,7 +1129,7 @@ fn test_a_color_0_8502() {
         name: "a_color_0.8502",
         config_file: "a_color_0.8502.ron",
         reference_file: "a_color_0.8502.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_color=0.8502 测试失败");
 }
@@ -1140,7 +1140,7 @@ fn test_a_color_0_9051() {
         name: "a_color_0.9051",
         config_file: "a_color_0.9051.ron",
         reference_file: "a_color_0.9051.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_color=0.9051 测试失败");
 }
@@ -1151,7 +1151,7 @@ fn test_a_color_0_9515() {
         name: "a_color_0.9515",
         config_file: "a_color_0.9515.ron",
         reference_file: "a_color_0.9515.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_color=0.9515 测试失败");
 }
@@ -1162,7 +1162,7 @@ fn test_a_color_1_0() {
         name: "a_color_1.0",
         config_file: "a_color_1.0.ron",
         reference_file: "a_color_1.0.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_color=1.0 测试失败");
 }
@@ -1215,7 +1215,7 @@ fn test_osc_mix_0_0547() {
         name: "osc_mix_0.0547",
         config_file: "osc_mix_0.0547.ron",
         reference_file: "osc_mix_0.0547.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("osc_mix=0.0547 测试失败");
 }
@@ -1226,7 +1226,7 @@ fn test_osc_mix_0_1058() {
         name: "osc_mix_0.1058",
         config_file: "osc_mix_0.1058.ron",
         reference_file: "osc_mix_0.1058.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("osc_mix=0.1058 测试失败");
 }
@@ -1237,7 +1237,7 @@ fn test_osc_mix_0_1496() {
         name: "osc_mix_0.1496",
         config_file: "osc_mix_0.1496.ron",
         reference_file: "osc_mix_0.1496.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("osc_mix=0.1496 测试失败");
 }
@@ -1248,7 +1248,7 @@ fn test_osc_mix_0_2007() {
         name: "osc_mix_0.2007",
         config_file: "osc_mix_0.2007.ron",
         reference_file: "osc_mix_0.2007.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("osc_mix=0.2007 测试失败");
 }
@@ -1259,7 +1259,7 @@ fn test_osc_mix_0_2518() {
         name: "osc_mix_0.2518",
         config_file: "osc_mix_0.2518.ron",
         reference_file: "osc_mix_0.2518.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("osc_mix=0.2518 测试失败");
 }
@@ -1270,7 +1270,7 @@ fn test_osc_mix_0_3102() {
         name: "osc_mix_0.3102",
         config_file: "osc_mix_0.3102.ron",
         reference_file: "osc_mix_0.3102.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("osc_mix=0.3102 测试失败");
 }
@@ -1281,7 +1281,7 @@ fn test_osc_mix_0_3540() {
         name: "osc_mix_0.3540",
         config_file: "osc_mix_0.3540.ron",
         reference_file: "osc_mix_0.3540.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("osc_mix=0.3540 测试失败");
 }
@@ -1292,7 +1292,7 @@ fn test_osc_mix_0_4051() {
         name: "osc_mix_0.4051",
         config_file: "osc_mix_0.4051.ron",
         reference_file: "osc_mix_0.4051.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("osc_mix=0.4051 测试失败");
 }
@@ -1303,7 +1303,7 @@ fn test_osc_mix_0_4536() {
         name: "osc_mix_0.4536",
         config_file: "osc_mix_0.4536.ron",
         reference_file: "osc_mix_0.4536.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("osc_mix=0.4536 测试失败");
 }
@@ -1314,7 +1314,7 @@ fn test_osc_mix_0_4958() {
         name: "osc_mix_0.4958",
         config_file: "osc_mix_0.4958.ron",
         reference_file: "osc_mix_0.4958.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("osc_mix=0.4958 测试失败");
 }
@@ -1325,7 +1325,7 @@ fn test_osc_mix_0_5506() {
         name: "osc_mix_0.5506",
         config_file: "osc_mix_0.5506.ron",
         reference_file: "osc_mix_0.5506.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("osc_mix=0.5506 测试失败");
 }
@@ -1336,7 +1336,7 @@ fn test_osc_mix_0_6055() {
         name: "osc_mix_0.6055",
         config_file: "osc_mix_0.6055.ron",
         reference_file: "osc_mix_0.6055.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("osc_mix=0.6055 测试失败");
 }
@@ -1347,7 +1347,7 @@ fn test_osc_mix_0_6519() {
         name: "osc_mix_0.6519",
         config_file: "osc_mix_0.6519.ron",
         reference_file: "osc_mix_0.6519.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("osc_mix=0.6519 测试失败");
 }
@@ -1358,7 +1358,7 @@ fn test_osc_mix_0_7025() {
         name: "osc_mix_0.7025",
         config_file: "osc_mix_0.7025.ron",
         reference_file: "osc_mix_0.7025.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("osc_mix=0.7025 测试失败");
 }
@@ -1369,7 +1369,7 @@ fn test_osc_mix_0_7489() {
         name: "osc_mix_0.7489",
         config_file: "osc_mix_0.7489.ron",
         reference_file: "osc_mix_0.7489.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("osc_mix=0.7489 测试失败");
 }
@@ -1380,7 +1380,7 @@ fn test_osc_mix_0_8080() {
         name: "osc_mix_0.8080",
         config_file: "osc_mix_0.8080.ron",
         reference_file: "osc_mix_0.8080.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("osc_mix=0.8080 测试失败");
 }
@@ -1391,7 +1391,7 @@ fn test_osc_mix_0_8502() {
         name: "osc_mix_0.8502",
         config_file: "osc_mix_0.8502.ron",
         reference_file: "osc_mix_0.8502.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("osc_mix=0.8502 测试失败");
 }
@@ -1402,7 +1402,7 @@ fn test_osc_mix_0_9051() {
         name: "osc_mix_0.9051",
         config_file: "osc_mix_0.9051.ron",
         reference_file: "osc_mix_0.9051.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("osc_mix=0.9051 测试失败");
 }
@@ -1413,7 +1413,7 @@ fn test_osc_mix_0_9515() {
         name: "osc_mix_0.9515",
         config_file: "osc_mix_0.9515.ron",
         reference_file: "osc_mix_0.9515.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("osc_mix=0.9515 测试失败");
 }
@@ -1424,7 +1424,7 @@ fn test_osc_mix_1_0() {
         name: "osc_mix_1.0",
         config_file: "osc_mix_1.0.ron",
         reference_file: "osc_mix_1.0.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("osc_mix=1.0 测试失败");
 }
@@ -1556,7 +1556,7 @@ fn test_a_freq_0_0547() {
         name: "a_freq_0.0547",
         config_file: "a_freq_0.0547.ron",
         reference_file: "a_freq_0.0547.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_freq=0.0547 测试失败");
 }
@@ -1567,7 +1567,7 @@ fn test_a_freq_0_1058() {
         name: "a_freq_0.1058",
         config_file: "a_freq_0.1058.ron",
         reference_file: "a_freq_0.1058.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_freq=0.1058 测试失败");
 }
@@ -1578,7 +1578,7 @@ fn test_a_freq_0_1496() {
         name: "a_freq_0.1496",
         config_file: "a_freq_0.1496.ron",
         reference_file: "a_freq_0.1496.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_freq=0.1496 测试失败");
 }
@@ -1589,7 +1589,7 @@ fn test_a_freq_0_2007() {
         name: "a_freq_0.2007",
         config_file: "a_freq_0.2007.ron",
         reference_file: "a_freq_0.2007.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_freq=0.2007 测试失败");
 }
@@ -1600,7 +1600,7 @@ fn test_a_freq_0_2518() {
         name: "a_freq_0.2518",
         config_file: "a_freq_0.2518.ron",
         reference_file: "a_freq_0.2518.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_freq=0.2518 测试失败");
 }
@@ -1611,7 +1611,7 @@ fn test_a_freq_0_3102() {
         name: "a_freq_0.3102",
         config_file: "a_freq_0.3102.ron",
         reference_file: "a_freq_0.3102.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_freq=0.3102 测试失败");
 }
@@ -1622,7 +1622,7 @@ fn test_a_freq_0_3540() {
         name: "a_freq_0.3540",
         config_file: "a_freq_0.3540.ron",
         reference_file: "a_freq_0.3540.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_freq=0.3540 测试失败");
 }
@@ -1633,7 +1633,7 @@ fn test_a_freq_0_4051() {
         name: "a_freq_0.4051",
         config_file: "a_freq_0.4051.ron",
         reference_file: "a_freq_0.4051.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_freq=0.4051 测试失败");
 }
@@ -1644,7 +1644,7 @@ fn test_a_freq_0_4536() {
         name: "a_freq_0.4536",
         config_file: "a_freq_0.4536.ron",
         reference_file: "a_freq_0.4536.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_freq=0.4536 测试失败");
 }
@@ -1655,7 +1655,7 @@ fn test_a_freq_0_4958() {
         name: "a_freq_0.4958",
         config_file: "a_freq_0.4958.ron",
         reference_file: "a_freq_0.4958.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_freq=0.4958 测试失败");
 }
@@ -1666,7 +1666,7 @@ fn test_a_freq_0_5506() {
         name: "a_freq_0.5506",
         config_file: "a_freq_0.5506.ron",
         reference_file: "a_freq_0.5506.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_freq=0.5506 测试失败");
 }
@@ -1677,7 +1677,7 @@ fn test_a_freq_0_6055() {
         name: "a_freq_0.6055",
         config_file: "a_freq_0.6055.ron",
         reference_file: "a_freq_0.6055.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_freq=0.6055 测试失败");
 }
@@ -1688,7 +1688,7 @@ fn test_a_freq_0_6519() {
         name: "a_freq_0.6519",
         config_file: "a_freq_0.6519.ron",
         reference_file: "a_freq_0.6519.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_freq=0.6519 测试失败");
 }
@@ -1699,7 +1699,7 @@ fn test_a_freq_0_7025() {
         name: "a_freq_0.7025",
         config_file: "a_freq_0.7025.ron",
         reference_file: "a_freq_0.7025.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_freq=0.7025 测试失败");
 }
@@ -1710,7 +1710,7 @@ fn test_a_freq_0_7489() {
         name: "a_freq_0.7489",
         config_file: "a_freq_0.7489.ron",
         reference_file: "a_freq_0.7489.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_freq=0.7489 测试失败");
 }
@@ -1721,7 +1721,7 @@ fn test_a_freq_0_8080() {
         name: "a_freq_0.8080",
         config_file: "a_freq_0.8080.ron",
         reference_file: "a_freq_0.8080.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_freq=0.8080 测试失败");
 }
@@ -1732,7 +1732,7 @@ fn test_a_freq_0_8502() {
         name: "a_freq_0.8502",
         config_file: "a_freq_0.8502.ron",
         reference_file: "a_freq_0.8502.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_freq=0.8502 测试失败");
 }
@@ -1743,7 +1743,7 @@ fn test_a_freq_0_9051() {
         name: "a_freq_0.9051",
         config_file: "a_freq_0.9051.ron",
         reference_file: "a_freq_0.9051.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_freq=0.9051 测试失败");
 }
@@ -1754,7 +1754,7 @@ fn test_a_freq_0_9515() {
         name: "a_freq_0.9515",
         config_file: "a_freq_0.9515.ron",
         reference_file: "a_freq_0.9515.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_freq=0.9515 测试失败");
 }
@@ -1765,7 +1765,7 @@ fn test_a_freq_1_0() {
         name: "a_freq_1.0",
         config_file: "a_freq_1.0.ron",
         reference_file: "a_freq_1.0.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("a_freq=1.0 测试失败");
 }
@@ -1778,7 +1778,7 @@ fn test_b_form_0_0547() {
         name: "b_form_0.0547",
         config_file: "b_form_0.0547.ron",
         reference_file: "b_form_0.0547.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_form=0.0547 测试失败");
 }
@@ -1789,7 +1789,7 @@ fn test_b_form_0_1058() {
         name: "b_form_0.1058",
         config_file: "b_form_0.1058.ron",
         reference_file: "b_form_0.1058.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_form=0.1058 测试失败");
 }
@@ -1800,7 +1800,7 @@ fn test_b_form_0_1496() {
         name: "b_form_0.1496",
         config_file: "b_form_0.1496.ron",
         reference_file: "b_form_0.1496.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_form=0.1496 测试失败");
 }
@@ -1811,7 +1811,7 @@ fn test_b_form_0_2007() {
         name: "b_form_0.2007",
         config_file: "b_form_0.2007.ron",
         reference_file: "b_form_0.2007.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_form=0.2007 测试失败");
 }
@@ -1822,7 +1822,7 @@ fn test_b_form_0_2518() {
         name: "b_form_0.2518",
         config_file: "b_form_0.2518.ron",
         reference_file: "b_form_0.2518.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_form=0.2518 测试失败");
 }
@@ -1833,7 +1833,7 @@ fn test_b_form_0_3102() {
         name: "b_form_0.3102",
         config_file: "b_form_0.3102.ron",
         reference_file: "b_form_0.3102.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_form=0.3102 测试失败");
 }
@@ -1844,7 +1844,7 @@ fn test_b_form_0_3540() {
         name: "b_form_0.3540",
         config_file: "b_form_0.3540.ron",
         reference_file: "b_form_0.3540.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_form=0.3540 测试失败");
 }
@@ -1855,7 +1855,7 @@ fn test_b_form_0_4051() {
         name: "b_form_0.4051",
         config_file: "b_form_0.4051.ron",
         reference_file: "b_form_0.4051.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_form=0.4051 测试失败");
 }
@@ -1866,7 +1866,7 @@ fn test_b_form_0_4536() {
         name: "b_form_0.4536",
         config_file: "b_form_0.4536.ron",
         reference_file: "b_form_0.4536.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_form=0.4536 测试失败");
 }
@@ -1877,7 +1877,7 @@ fn test_b_form_0_4958() {
         name: "b_form_0.4958",
         config_file: "b_form_0.4958.ron",
         reference_file: "b_form_0.4958.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_form=0.4958 测试失败");
 }
@@ -1888,7 +1888,7 @@ fn test_b_form_0_5506() {
         name: "b_form_0.5506",
         config_file: "b_form_0.5506.ron",
         reference_file: "b_form_0.5506.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_form=0.5506 测试失败");
 }
@@ -1899,7 +1899,7 @@ fn test_b_form_0_6055() {
         name: "b_form_0.6055",
         config_file: "b_form_0.6055.ron",
         reference_file: "b_form_0.6055.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_form=0.6055 测试失败");
 }
@@ -1910,7 +1910,7 @@ fn test_b_form_0_6519() {
         name: "b_form_0.6519",
         config_file: "b_form_0.6519.ron",
         reference_file: "b_form_0.6519.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_form=0.6519 测试失败");
 }
@@ -1921,7 +1921,7 @@ fn test_b_form_0_7025() {
         name: "b_form_0.7025",
         config_file: "b_form_0.7025.ron",
         reference_file: "b_form_0.7025.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_form=0.7025 测试失败");
 }
@@ -1932,7 +1932,7 @@ fn test_b_form_0_7489() {
         name: "b_form_0.7489",
         config_file: "b_form_0.7489.ron",
         reference_file: "b_form_0.7489.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_form=0.7489 测试失败");
 }
@@ -1943,7 +1943,7 @@ fn test_b_form_0_8080() {
         name: "b_form_0.8080",
         config_file: "b_form_0.8080.ron",
         reference_file: "b_form_0.8080.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_form=0.8080 测试失败");
 }
@@ -1954,7 +1954,7 @@ fn test_b_form_0_8502() {
         name: "b_form_0.8502",
         config_file: "b_form_0.8502.ron",
         reference_file: "b_form_0.8502.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_form=0.8502 测试失败");
 }
@@ -1965,7 +1965,7 @@ fn test_b_form_0_9051() {
         name: "b_form_0.9051",
         config_file: "b_form_0.9051.ron",
         reference_file: "b_form_0.9051.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_form=0.9051 测试失败");
 }
@@ -1976,7 +1976,7 @@ fn test_b_form_0_9515() {
         name: "b_form_0.9515",
         config_file: "b_form_0.9515.ron",
         reference_file: "b_form_0.9515.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_form=0.9515 测试失败");
 }
@@ -1987,7 +1987,7 @@ fn test_b_form_1_0() {
         name: "b_form_1.0",
         config_file: "b_form_1.0.ron",
         reference_file: "b_form_1.0.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_form=1.0 测试失败");
 }
@@ -2000,7 +2000,7 @@ fn test_b_freq_0_0547() {
         name: "b_freq_0.0547",
         config_file: "b_freq_0.0547.ron",
         reference_file: "b_freq_0.0547.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_freq=0.0547 测试失败");
 }
@@ -2011,7 +2011,7 @@ fn test_b_freq_0_1058() {
         name: "b_freq_0.1058",
         config_file: "b_freq_0.1058.ron",
         reference_file: "b_freq_0.1058.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_freq=0.1058 测试失败");
 }
@@ -2022,7 +2022,7 @@ fn test_b_freq_0_1496() {
         name: "b_freq_0.1496",
         config_file: "b_freq_0.1496.ron",
         reference_file: "b_freq_0.1496.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_freq=0.1496 测试失败");
 }
@@ -2033,7 +2033,7 @@ fn test_b_freq_0_2007() {
         name: "b_freq_0.2007",
         config_file: "b_freq_0.2007.ron",
         reference_file: "b_freq_0.2007.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_freq=0.2007 测试失败");
 }
@@ -2044,7 +2044,7 @@ fn test_b_freq_0_2518() {
         name: "b_freq_0.2518",
         config_file: "b_freq_0.2518.ron",
         reference_file: "b_freq_0.2518.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_freq=0.2518 测试失败");
 }
@@ -2055,7 +2055,7 @@ fn test_b_freq_0_3102() {
         name: "b_freq_0.3102",
         config_file: "b_freq_0.3102.ron",
         reference_file: "b_freq_0.3102.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_freq=0.3102 测试失败");
 }
@@ -2066,7 +2066,7 @@ fn test_b_freq_0_3540() {
         name: "b_freq_0.3540",
         config_file: "b_freq_0.3540.ron",
         reference_file: "b_freq_0.3540.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_freq=0.3540 测试失败");
 }
@@ -2077,7 +2077,7 @@ fn test_b_freq_0_4051() {
         name: "b_freq_0.4051",
         config_file: "b_freq_0.4051.ron",
         reference_file: "b_freq_0.4051.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_freq=0.4051 测试失败");
 }
@@ -2088,7 +2088,7 @@ fn test_b_freq_0_4536() {
         name: "b_freq_0.4536",
         config_file: "b_freq_0.4536.ron",
         reference_file: "b_freq_0.4536.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_freq=0.4536 测试失败");
 }
@@ -2099,7 +2099,7 @@ fn test_b_freq_0_4958() {
         name: "b_freq_0.4958",
         config_file: "b_freq_0.4958.ron",
         reference_file: "b_freq_0.4958.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_freq=0.4958 测试失败");
 }
@@ -2110,7 +2110,7 @@ fn test_b_freq_0_5506() {
         name: "b_freq_0.5506",
         config_file: "b_freq_0.5506.ron",
         reference_file: "b_freq_0.5506.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_freq=0.5506 测试失败");
 }
@@ -2121,7 +2121,7 @@ fn test_b_freq_0_6055() {
         name: "b_freq_0.6055",
         config_file: "b_freq_0.6055.ron",
         reference_file: "b_freq_0.6055.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_freq=0.6055 测试失败");
 }
@@ -2132,7 +2132,7 @@ fn test_b_freq_0_6519() {
         name: "b_freq_0.6519",
         config_file: "b_freq_0.6519.ron",
         reference_file: "b_freq_0.6519.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_freq=0.6519 测试失败");
 }
@@ -2143,7 +2143,7 @@ fn test_b_freq_0_7025() {
         name: "b_freq_0.7025",
         config_file: "b_freq_0.7025.ron",
         reference_file: "b_freq_0.7025.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_freq=0.7025 测试失败");
 }
@@ -2154,7 +2154,7 @@ fn test_b_freq_0_7489() {
         name: "b_freq_0.7489",
         config_file: "b_freq_0.7489.ron",
         reference_file: "b_freq_0.7489.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_freq=0.7489 测试失败");
 }
@@ -2165,7 +2165,7 @@ fn test_b_freq_0_8080() {
         name: "b_freq_0.8080",
         config_file: "b_freq_0.8080.ron",
         reference_file: "b_freq_0.8080.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_freq=0.8080 测试失败");
 }
@@ -2176,7 +2176,7 @@ fn test_b_freq_0_8502() {
         name: "b_freq_0.8502",
         config_file: "b_freq_0.8502.ron",
         reference_file: "b_freq_0.8502.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_freq=0.8502 测试失败");
 }
@@ -2187,7 +2187,7 @@ fn test_b_freq_0_9051() {
         name: "b_freq_0.9051",
         config_file: "b_freq_0.9051.ron",
         reference_file: "b_freq_0.9051.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_freq=0.9051 测试失败");
 }
@@ -2198,7 +2198,7 @@ fn test_b_freq_0_9515() {
         name: "b_freq_0.9515",
         config_file: "b_freq_0.9515.ron",
         reference_file: "b_freq_0.9515.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_freq=0.9515 测试失败");
 }
@@ -2209,7 +2209,7 @@ fn test_b_freq_1_0() {
         name: "b_freq_1.0",
         config_file: "b_freq_1.0.ron",
         reference_file: "b_freq_1.0.wav",
-        duration: 7.019,
+        duration: 7.019395833333333,
     };
     test.run().expect("b_freq=1.0 测试失败");
 }
