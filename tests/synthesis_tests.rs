@@ -2213,3 +2213,262 @@ fn test_b_freq_1_0() {
     };
     test.run().expect("b_freq=1.0 测试失败");
 }
+// Osc Mix + B Freq Tests - osc_mix=0.7937 with varying b_freq
+struct OscMixBFreqTestCase {
+    name: &'static str,
+    config_file: &'static str,
+    reference_file: &'static str,
+    duration: f64,
+}
+
+impl OscMixBFreqTestCase {
+    fn run(&self) -> Result<(), Box<dyn std::error::Error>> {
+        let config_path = Path::new("tests/fixtures/osc_mix_b_freq_tests").join(self.config_file);
+        let reference_path =
+            Path::new("tests/fixtures/osc_mix_b_freq_tests").join(self.reference_file);
+
+        let patch = synplant::SynplantPatch::from_ron_file(&config_path)?;
+        let synth = synthesizer::SynplantSynthesizer::new(patch.genome);
+        let wave = synth.synthesize(self.duration);
+
+        std::fs::create_dir_all("tests/output")?;
+        let output_path = format!("tests/output/test_{}.wav", self.name);
+        wave.save_wav16(&output_path)?;
+
+        let result = audio_compare::compare_wav_files(Path::new(&output_path), &reference_path)?;
+
+        println!("\n测试 '{}' 结果:", self.name);
+        result.print_report();
+
+        const SIMILARITY_THRESHOLD: f64 = 95.0;
+        if !result.is_similar(SIMILARITY_THRESHOLD) {
+            return Err(format!(
+                "相似度 {:.2}% 低于阈值 {:.2}%",
+                result.similarity, SIMILARITY_THRESHOLD
+            )
+            .into());
+        }
+
+        Ok(())
+    }
+}
+
+#[test]
+fn test_osc_mix_0_7937_b_freq_0_0547() {
+    let test = OscMixBFreqTestCase {
+        name: "osc_mix_0.7937_b_freq_0.0547",
+        config_file: "osc_mix_0.7937_b_freq_0.0547.ron",
+        reference_file: "osc_mix_0.7937_b_freq_0.0547.wav",
+        duration: 7.019395833333333,
+    };
+    test.run().expect("osc_mix_0.7937_b_freq_0.0547 测试失败");
+}
+
+#[test]
+fn test_osc_mix_0_7937_b_freq_0_1058() {
+    let test = OscMixBFreqTestCase {
+        name: "osc_mix_0.7937_b_freq_0.1058",
+        config_file: "osc_mix_0.7937_b_freq_0.1058.ron",
+        reference_file: "osc_mix_0.7937_b_freq_0.1058.wav",
+        duration: 7.019395833333333,
+    };
+    test.run().expect("osc_mix_0.7937_b_freq_0.1058 测试失败");
+}
+
+#[test]
+fn test_osc_mix_0_7937_b_freq_0_1496() {
+    let test = OscMixBFreqTestCase {
+        name: "osc_mix_0.7937_b_freq_0.1496",
+        config_file: "osc_mix_0.7937_b_freq_0.1496.ron",
+        reference_file: "osc_mix_0.7937_b_freq_0.1496.wav",
+        duration: 7.019395833333333,
+    };
+    test.run().expect("osc_mix_0.7937_b_freq_0.1496 测试失败");
+}
+
+#[test]
+fn test_osc_mix_0_7937_b_freq_0_2007() {
+    let test = OscMixBFreqTestCase {
+        name: "osc_mix_0.7937_b_freq_0.2007",
+        config_file: "osc_mix_0.7937_b_freq_0.2007.ron",
+        reference_file: "osc_mix_0.7937_b_freq_0.2007.wav",
+        duration: 7.019395833333333,
+    };
+    test.run().expect("osc_mix_0.7937_b_freq_0.2007 测试失败");
+}
+
+#[test]
+fn test_osc_mix_0_7937_b_freq_0_2518() {
+    let test = OscMixBFreqTestCase {
+        name: "osc_mix_0.7937_b_freq_0.2518",
+        config_file: "osc_mix_0.7937_b_freq_0.2518.ron",
+        reference_file: "osc_mix_0.7937_b_freq_0.2518.wav",
+        duration: 7.019395833333333,
+    };
+    test.run().expect("osc_mix_0.7937_b_freq_0.2518 测试失败");
+}
+
+#[test]
+fn test_osc_mix_0_7937_b_freq_0_3102() {
+    let test = OscMixBFreqTestCase {
+        name: "osc_mix_0.7937_b_freq_0.3102",
+        config_file: "osc_mix_0.7937_b_freq_0.3102.ron",
+        reference_file: "osc_mix_0.7937_b_freq_0.3102.wav",
+        duration: 7.019395833333333,
+    };
+    test.run().expect("osc_mix_0.7937_b_freq_0.3102 测试失败");
+}
+
+#[test]
+fn test_osc_mix_0_7937_b_freq_0_3540() {
+    let test = OscMixBFreqTestCase {
+        name: "osc_mix_0.7937_b_freq_0.35400",
+        config_file: "osc_mix_0.7937_b_freq_0.3540.ron",
+        reference_file: "osc_mix_0.7937_b_freq_0.3540.wav",
+        duration: 7.019395833333333,
+    };
+    test.run().expect("osc_mix_0.7937_b_freq_0.3540 测试失败");
+}
+
+#[test]
+fn test_osc_mix_0_7937_b_freq_0_4051() {
+    let test = OscMixBFreqTestCase {
+        name: "osc_mix_0.7937_b_freq_0.4051",
+        config_file: "osc_mix_0.7937_b_freq_0.4051.ron",
+        reference_file: "osc_mix_0.7937_b_freq_0.4051.wav",
+        duration: 7.019395833333333,
+    };
+    test.run().expect("osc_mix_0.7937_b_freq_0.4051 测试失败");
+}
+
+#[test]
+fn test_osc_mix_0_7937_b_freq_0_4536() {
+    let test = OscMixBFreqTestCase {
+        name: "osc_mix_0.7937_b_freq_0.4536",
+        config_file: "osc_mix_0.7937_b_freq_0.4536.ron",
+        reference_file: "osc_mix_0.7937_b_freq_0.4536.wav",
+        duration: 7.019395833333333,
+    };
+    test.run().expect("osc_mix_0.7937_b_freq_0.4536 测试失败");
+}
+
+#[test]
+fn test_osc_mix_0_7937_b_freq_0_4958() {
+    let test = OscMixBFreqTestCase {
+        name: "osc_mix_0.7937_b_freq_0.4958",
+        config_file: "osc_mix_0.7937_b_freq_0.4958.ron",
+        reference_file: "osc_mix_0.7937_b_freq_0.4958.wav",
+        duration: 7.019395833333333,
+    };
+    test.run().expect("osc_mix_0.7937_b_freq_0.4958 测试失败");
+}
+
+#[test]
+fn test_osc_mix_0_7937_b_freq_0_5506() {
+    let test = OscMixBFreqTestCase {
+        name: "osc_mix_0.7937_b_freq_0.5506",
+        config_file: "osc_mix_0.7937_b_freq_0.5506.ron",
+        reference_file: "osc_mix_0.7937_b_freq_0.5506.wav",
+        duration: 7.019395833333333,
+    };
+    test.run().expect("osc_mix_0.7937_b_freq_0.5506 测试失败");
+}
+
+#[test]
+fn test_osc_mix_0_7937_b_freq_0_6055() {
+    let test = OscMixBFreqTestCase {
+        name: "osc_mix_0.7937_b_freq_0.6055",
+        config_file: "osc_mix_0.7937_b_freq_0.6055.ron",
+        reference_file: "osc_mix_0.7937_b_freq_0.6055.wav",
+        duration: 7.019395833333333,
+    };
+    test.run().expect("osc_mix_0.7937_b_freq_0.6055 测试失败");
+}
+
+#[test]
+fn test_osc_mix_0_7937_b_freq_0_6519() {
+    let test = OscMixBFreqTestCase {
+        name: "osc_mix_0.7937_b_freq_0.6519",
+        config_file: "osc_mix_0.7937_b_freq_0.6519.ron",
+        reference_file: "osc_mix_0.7937_b_freq_0.6519.wav",
+        duration: 7.019395833333333,
+    };
+    test.run().expect("osc_mix_0.7937_b_freq_0.6519 测试失败");
+}
+
+#[test]
+fn test_osc_mix_0_7937_b_freq_0_7025() {
+    let test = OscMixBFreqTestCase {
+        name: "osc_mix_0.7937_b_freq_0.7025",
+        config_file: "osc_mix_0.7937_b_freq_0.7025.ron",
+        reference_file: "osc_mix_0.7937_b_freq_0.7025.wav",
+        duration: 7.019395833333333,
+    };
+    test.run().expect("osc_mix_0.7937_b_freq_0.7025 测试失败");
+}
+
+#[test]
+fn test_osc_mix_0_7937_b_freq_0_7489() {
+    let test = OscMixBFreqTestCase {
+        name: "osc_mix_0.7937_b_freq_0.7489",
+        config_file: "osc_mix_0.7937_b_freq_0.7489.ron",
+        reference_file: "osc_mix_0.7937_b_freq_0.7489.wav",
+        duration: 7.019395833333333,
+    };
+    test.run().expect("osc_mix_0.7937_b_freq_0.7489 测试失败");
+}
+
+#[test]
+fn test_osc_mix_0_7937_b_freq_0_8080() {
+    let test = OscMixBFreqTestCase {
+        name: "osc_mix_0.7937_b_freq_0.80800",
+        config_file: "osc_mix_0.7937_b_freq_0.8080.ron",
+        reference_file: "osc_mix_0.7937_b_freq_0.8080.wav",
+        duration: 7.019395833333333,
+    };
+    test.run().expect("osc_mix_0.7937_b_freq_0.8080 测试失败");
+}
+
+#[test]
+fn test_osc_mix_0_7937_b_freq_0_8502() {
+    let test = OscMixBFreqTestCase {
+        name: "osc_mix_0.7937_b_freq_0.8502",
+        config_file: "osc_mix_0.7937_b_freq_0.8502.ron",
+        reference_file: "osc_mix_0.7937_b_freq_0.8502.wav",
+        duration: 7.019395833333333,
+    };
+    test.run().expect("osc_mix_0.7937_b_freq_0.8502 测试失败");
+}
+
+#[test]
+fn test_osc_mix_0_7937_b_freq_0_9051() {
+    let test = OscMixBFreqTestCase {
+        name: "osc_mix_0.7937_b_freq_0.9051",
+        config_file: "osc_mix_0.7937_b_freq_0.9051.ron",
+        reference_file: "osc_mix_0.7937_b_freq_0.9051.wav",
+        duration: 7.019395833333333,
+    };
+    test.run().expect("osc_mix_0.7937_b_freq_0.9051 测试失败");
+}
+
+#[test]
+fn test_osc_mix_0_7937_b_freq_0_9515() {
+    let test = OscMixBFreqTestCase {
+        name: "osc_mix_0.7937_b_freq_0.9515",
+        config_file: "osc_mix_0.7937_b_freq_0.9515.ron",
+        reference_file: "osc_mix_0.7937_b_freq_0.9515.wav",
+        duration: 7.019395833333333,
+    };
+    test.run().expect("osc_mix_0.7937_b_freq_0.9515 测试失败");
+}
+
+#[test]
+fn test_osc_mix_0_7937_b_freq_1_0() {
+    let test = OscMixBFreqTestCase {
+        name: "osc_mix_0.7937_b_freq_1.0",
+        config_file: "osc_mix_0.7937_b_freq_1.0.ron",
+        reference_file: "osc_mix_0.7937_b_freq_1.0.wav",
+        duration: 7.019395833333333,
+    };
+    test.run().expect("osc_mix_0.7937_b_freq_1.0 测试失败");
+}
