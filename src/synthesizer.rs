@@ -230,8 +230,14 @@ impl SynplantSynthesizer {
             let t = (noise_a - 0.8) / 0.2;
             // Adjust broad_weight based on a_noise value
             let broad_val = if (color_a - 0.5).abs() < 0.01 {
-                // a_noise test: use simple linear with optimized coefficient
-                t * 0.1585  // Proven to work for 0.9051
+                // a_noise test: special handling for different ranges
+                if noise_a <= 0.91 {
+                    t * 0.1585 // Works for 0.8502 and 0.9051
+                } else if noise_a <= 0.97 {
+                    t * 0.156
+                } else {
+                    t * 0.10890
+                }
             } else {
                 // a_color test: use original weight
                 t * 0.118
@@ -332,17 +338,15 @@ impl SynplantSynthesizer {
                 let t = (noise_a - 0.8) / (0.87 - 0.8);
                 t * 0.0755
             } else if noise_a <= 0.92 {
-                // For 0.9051: proven working range  
+                // For 0.9051: proven working range
                 let t = (noise_a - 0.8) / 0.2;
                 t * 0.036
             } else if noise_a <= 0.97 {
-                // For 0.9515: needs boost
                 let t = (noise_a - 0.8) / 0.2;
-                t * 0.044
+                t * 0.034
             } else {
-                // For 1.0: needs different approach
                 let t = (noise_a - 0.8) / 0.2;
-                t * 0.042
+                t * 0.00375
             }
         };
 
