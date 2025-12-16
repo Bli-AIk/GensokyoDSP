@@ -56,12 +56,6 @@ cargo test -- --nocapture
 cargo test list_available_tests -- --ignored --nocapture
 ```
 
-## 当前测试状态
-
-| 测试名称 | 配置文件 | 参考音频 | 相似度 | 状态 |
-|---------|---------|---------|--------|------|
-| default | default.ron | default_syn.wav | ~56% | 🔧 开发中 |
-
 ## 注意事项
 
 - 测试生成的临时文件会保存在 `target/test_{name}.wav`
