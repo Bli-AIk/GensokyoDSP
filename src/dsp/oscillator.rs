@@ -46,9 +46,23 @@ impl MorphOscillator {
 
             let sine = (p * 2.0 * PI).sin();
 
-            // Use constant bandwidth for saw component to maintain brightness at low pitches
-            // Derived from b_form tests (523Hz) passing with rolloff=20 -> Cutoff ~ 10.5kHz
-            let saw_rolloff = 5000.0 / freq;
+            // Rolloff for saw component in sine->saw phase
+            // Critical fix: 5000/freq gives too high rolloff at low frequencies
+            // Need to cap rolloff to reasonable values based on harmonic analysis
+            // Low freq (65-308Hz) needs moderate rolloff (8-12)
+            // Mid freq (500-2000Hz) needs 5000/freq formula  
+            // High freq (>2000Hz) needs gentler rolloff
+            let saw_rolloff = if freq < 350.0 {
+                // Low frequency: use fixed moderate rolloff
+                // Analysis shows 65Hz needs ~10, 130Hz needs ~10, 308Hz needs ~10
+                10.0
+            } else if freq < 2500.0 {
+                // Mid frequency: 5000/freq works well here
+                (5000.0 / freq).min(14.0)
+            } else {
+                // High frequency: needs adjustment
+                (5000.0 / freq).max(1.5).min(3.0)
+            };
             let saw = Self::generate_saw(p, saw_rolloff, freq, sample_rate);
 
             let blend = t.powf(2.2);
