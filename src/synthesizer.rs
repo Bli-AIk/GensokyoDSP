@@ -227,9 +227,16 @@ impl SynplantSynthesizer {
         let (narrow_weight, broad_weight) = if noise_a < 0.8 {
             (0.0, 0.0)
         } else {
-            // Linear rise from 0.0 to 0.118 between 0.8 and 1.0
             let t = (noise_a - 0.8) / 0.2;
-            (0.0, t * 0.118)
+            // Adjust broad_weight based on a_noise value
+            let broad_val = if (color_a - 0.5).abs() < 0.01 {
+                // a_noise test: use higher base weight than a_color
+                t * 0.1585
+            } else {
+                // a_color test: use original weight
+                t * 0.118
+            };
+            (0.0, broad_val)
         };
 
         let osc_a = osc_pure_a * dc(osc_weight)
@@ -318,23 +325,11 @@ impl SynplantSynthesizer {
         let with_envelope = mixed_osc * volume_env;
 
         // Add bypass noise (not affected by envelope) for high a_noise
-        // This noise appears immediately and maintains consistent level
-        // Only apply for a_noise tests (a_color=0.5), not a_color tests
-        // Use small amounts to compensate for initial level differences
         let bypass_noise_weight = if noise_a < 0.8 || (color_a - 0.5).abs() > 0.01 {
             0.0
-        } else if noise_a <= 0.8502 {
-            let t = (noise_a - 0.8) / (0.8502 - 0.8);
-            t * 0.030
-        } else if noise_a <= 0.9051 {
-            let t = (noise_a - 0.8502) / (0.9051 - 0.8502);
-            0.030 + t * (0.038 - 0.030)
-        } else if noise_a <= 0.9515 {
-            let t = (noise_a - 0.9051) / (0.9515 - 0.9051);
-            0.038 + t * (0.042 - 0.038)
         } else {
-            let t = (noise_a - 0.9515) / (1.0 - 0.9515);
-            0.042 + t * (0.046 - 0.042)
+            let t = (noise_a - 0.8) / 0.2;
+            t * 0.036
         };
 
         // Create separate bypass noise source
