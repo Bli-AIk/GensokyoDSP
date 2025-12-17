@@ -47,34 +47,37 @@ impl MorphOscillator {
             let sine = (p * 2.0 * PI).sin();
 
             // Rolloff for saw component in sine->saw phase
-            // Harmonic analysis shows reference audio has frequency-dependent rolloff:
-            // - 65Hz: H2/H1=0.403 (vs ideal 0.5), ratio=0.806
-            // - 130Hz: similar pattern
-            // - 308Hz: similar pattern
-            // - 2093Hz: H2/H1=0.359, ratio=0.718 -> needs higher rolloff
-            // - 3754Hz: H2/H1=0.344, ratio=0.689 -> even higher rolloff
-            // - 5570Hz: H2/H1=0.246, ratio=0.491 -> very high rolloff
-            let saw_rolloff = if freq < 350.0 {
-                // Low frequency: use gentler rolloff to preserve harmonics
-                4.5
-            } else if freq < 1500.0 {
-                // Mid-low frequency: gradual transition
-                let base_rolloff = 5000.0 / freq;
-                base_rolloff.min(14.0)
-            } else if freq < 2500.0 {
-                // Mid-high frequency: 2000Hz->2.5, needs ~6-8
-                let base_rolloff = 5000.0 / freq;
-                (base_rolloff * 2.5).min(14.0)
-            } else if freq < 4500.0 {
-                // High frequency (2500-4500Hz): 3754Hz needs high rolloff
-                // H2 ratio suggests rolloff around 8-12
-                let base_rolloff = 5000.0 / freq;
-                (base_rolloff * 6.0).clamp(8.0, 15.0)
+            // Based on H2/H1 analysis from reference audio:
+            // - 65.5Hz: H2/H1=0.426, strength=4.78
+            // - 130.5Hz: H2/H1=0.369, strength=3.36
+            // - 308Hz: H2/H1=0.345, strength=2.98
+            // - 2093Hz: H2/H1=0.349, strength=3.05
+            // - 3754Hz: H2/H1=0.303, strength=2.48
+            // - 5569Hz: H2/H1=0.275, strength=2.21
+            let saw_rolloff = if freq < 100.0 {
+                4.8
+            } else if freq < 200.0 {
+                // 65.5Hz -> 130.5Hz: 4.78 -> 3.36
+                let t = (freq - 100.0) / 100.0;
+                4.78 + t * (3.36 - 4.78)
+            } else if freq < 400.0 {
+                // 130.5Hz -> 308Hz: 3.36 -> 2.98
+                let t = (freq - 200.0) / 200.0;
+                3.36 + t * (2.98 - 3.36)
+            } else if freq < 2200.0 {
+                // 308Hz -> 2093Hz: 2.98 -> 3.05
+                let t = (freq - 400.0) / 1800.0;
+                2.98 + t * (3.05 - 2.98)
+            } else if freq < 4000.0 {
+                // 2093Hz -> 3754Hz: 3.05 -> 2.48
+                let t = (freq - 2200.0) / 1800.0;
+                3.05 + t * (2.48 - 3.05)
+            } else if freq < 6000.0 {
+                // 3754Hz -> 5569Hz: 2.48 -> 2.21
+                let t = (freq - 4000.0) / 2000.0;
+                2.48 + t * (2.21 - 2.48)
             } else {
-                // Very high frequency (>4500Hz): 5570Hz needs very high rolloff
-                // H2 ratio=0.491 suggests rolloff around 12-18
-                let base_rolloff = 5000.0 / freq;
-                (base_rolloff * 15.0).clamp(12.0, 20.0)
+                2.21
             };
             let saw = Self::generate_saw(p, saw_rolloff, freq, sample_rate);
 
@@ -197,12 +200,14 @@ impl MorphOscillator {
         let safe_max_n = (nyquist / freq).floor() as i32;
         let actual_max_harmonics = std::cmp::min(max_harmonics, safe_max_n);
 
-        // Adapt rolloff when harmonics are limited
-        // At high frequencies with few harmonics, use gentler rolloff to preserve energy
-        let adaptive_rolloff = if actual_max_harmonics < 15 {
-            // High freq: scale rolloff to utilize available harmonics better
-            // When safe_max_n is small, make rolloff proportional to it
-            rolloff_strength.min((actual_max_harmonics as f64) * 1.5)
+        // For high frequencies with limited harmonics, adjust rolloff to match energy
+        // Based on empirical testing and reference audio analysis
+        let adaptive_rolloff = if actual_max_harmonics < 10 {
+            // Very limited harmonics (e.g., 3754Hz has 5, 2093Hz has 10)
+            rolloff_strength * 0.8
+        } else if actual_max_harmonics < 20 {
+            // Moderately limited harmonics
+            rolloff_strength * 0.9
         } else {
             rolloff_strength
         };
