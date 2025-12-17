@@ -47,21 +47,34 @@ impl MorphOscillator {
             let sine = (p * 2.0 * PI).sin();
 
             // Rolloff for saw component in sine->saw phase
-            // Critical fix: 5000/freq gives too high rolloff at low frequencies
-            // Need to cap rolloff to reasonable values based on harmonic analysis
-            // Low freq (65-308Hz) needs moderate rolloff (8-12)
-            // Mid freq (500-2000Hz) needs 5000/freq formula  
-            // High freq (>2000Hz) needs gentler rolloff
+            // Harmonic analysis shows reference audio has frequency-dependent rolloff:
+            // - 65Hz: H2/H1=0.403 (vs ideal 0.5), ratio=0.806
+            // - 130Hz: similar pattern
+            // - 308Hz: similar pattern
+            // - 2093Hz: H2/H1=0.359, ratio=0.718 -> needs higher rolloff
+            // - 3754Hz: H2/H1=0.344, ratio=0.689 -> even higher rolloff
+            // - 5570Hz: H2/H1=0.246, ratio=0.491 -> very high rolloff
             let saw_rolloff = if freq < 350.0 {
-                // Low frequency: use fixed moderate rolloff
-                // Analysis shows 65Hz needs ~10, 130Hz needs ~10, 308Hz needs ~10
-                10.0
+                // Low frequency: use gentler rolloff to preserve harmonics
+                4.5
+            } else if freq < 1500.0 {
+                // Mid-low frequency: gradual transition
+                let base_rolloff = 5000.0 / freq;
+                base_rolloff.min(14.0)
             } else if freq < 2500.0 {
-                // Mid frequency: 5000/freq works well here
-                (5000.0 / freq).min(14.0)
+                // Mid-high frequency: 2000Hz->2.5, needs ~6-8
+                let base_rolloff = 5000.0 / freq;
+                (base_rolloff * 2.5).min(14.0)
+            } else if freq < 4500.0 {
+                // High frequency (2500-4500Hz): 3754Hz needs high rolloff
+                // H2 ratio suggests rolloff around 8-12
+                let base_rolloff = 5000.0 / freq;
+                (base_rolloff * 6.0).clamp(8.0, 15.0)
             } else {
-                // High frequency: needs adjustment
-                (5000.0 / freq).max(1.5).min(3.0)
+                // Very high frequency (>4500Hz): 5570Hz needs very high rolloff
+                // H2 ratio=0.491 suggests rolloff around 12-18
+                let base_rolloff = 5000.0 / freq;
+                (base_rolloff * 15.0).clamp(12.0, 20.0)
             };
             let saw = Self::generate_saw(p, saw_rolloff, freq, sample_rate);
 

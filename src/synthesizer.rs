@@ -262,48 +262,8 @@ impl SynplantSynthesizer {
         let compensation_b = form_sig_b2 >> comp_node_b;
         let osc_b_pure = source_b * compensation_b;
 
-        // Frequency-dependent RMS compensation for oscillator B
-        // Based on empirical measurements from b_freq tests (iteratively refined)
-        // Calibration data:
-        // 65Hz: 1.2162 (pass), 130Hz: 0.7874, 308Hz: 0.8656
-        // 523Hz: 1.0 (unison), 2093Hz: 1.1175, 3754Hz: 1.3254, 5570Hz: 1.5638
-        let freq_compensation = if freq_b < 100.0 {
-            // 65Hz: 1.2162
-            let t = (freq_b - 40.0) / (100.0 - 40.0);
-            1.18 + t * (1.20 - 1.18)
-        } else if freq_b < 200.0 {
-            // 65Hz -> 1.2162, 130Hz -> 0.7874
-            let t = (freq_b - 65.4) / (130.5 - 65.4);
-            1.2162 + t * (0.7874 - 1.2162)
-        } else if freq_b < 400.0 {
-            // 130Hz -> 0.7874, 308Hz -> 0.8656
-            let t = (freq_b - 130.5) / (308.15 - 130.5);
-            0.7874 + t * (0.8656 - 0.7874)
-        } else if freq_b < 1500.0 {
-            // 308Hz -> 0.8656, 523Hz -> 1.0
-            let t = (freq_b - 308.15) / (523.0 - 308.15);
-            0.8656 + t * (1.0 - 0.8656)
-        } else if freq_b < 3000.0 {
-            // 523Hz -> 1.0, 2093Hz -> 1.1175
-            let t = (freq_b - 523.0) / (2093.0 - 523.0);
-            1.0 + t * (1.1175 - 1.0)
-        } else if freq_b < 4500.0 {
-            // 2093Hz -> 1.1175, 3754Hz -> 1.3254
-            let t = (freq_b - 2093.0) / (3754.3 - 2093.0);
-            1.1175 + t * (1.3254 - 1.1175)
-        } else if freq_b < 6500.0 {
-            // 3754Hz -> 1.3254, 5570Hz -> 1.5638
-            let t = (freq_b - 3754.3) / (5569.6 - 3754.3);
-            1.3254 + t * (1.5638 - 1.3254)
-        } else {
-            // > 6500Hz: extrapolate from 5570Hz
-            let base = 1.5638;
-            base + ((freq_b - 5569.6) / 5000.0) * 0.2
-        };
-
         // TODO: Add noise mixing for oscillator B (b_noise, currently 0.0 in tests)
-        // Apply frequency compensation
-        let osc_b = osc_b_pure * dc(freq_compensation);
+        let osc_b = osc_b_pure;
 
         // Stage 1c: Mix oscillators A and B
         // According to docs: at osc_mix=0.79, the mix is 50/50
